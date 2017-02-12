@@ -12,6 +12,13 @@ AMinion::AMinion()
  	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
+	/*UStaticMeshComponent* PhysicalMesh = NewObject<UStaticMeshComponent>(this);
+	static ConstructorHelpers::FObjectFinder<UStaticMesh>SphereMeshAsset(TEXT("StaticMesh'/Game/StarterContent/Shapes/Shape_Sphere.Shape_Sphere'"));
+	PhysicalMesh->SetStaticMesh(SphereMeshAsset.Object);
+	if (RootComponent)
+	{
+		PhysicalMesh->AttachTo(RootComponent);
+	}*/
 }
 
 // Called when the game starts or when spawned
@@ -20,44 +27,36 @@ void AMinion::BeginPlay()
 	Super::BeginPlay();
 
 	// Configure character movement
+	bUseControllerRotationPitch = false;
+	bUseControllerRotationYaw = false;
+	bUseControllerRotationRoll = false;
 	UCharacterMovementComponent* Movement = GetCharacterMovement();
 	Movement->bOrientRotationToMovement = true; // Rotate character to moving direction
 	Movement->RotationRate = FRotator(0.f, 640.f, 0.f);
 	Movement->bConstrainToPlane = true;
 	Movement->bSnapToPlaneAtStart = true;
 
-	AIControllerClass = ADyingIsGoodAIController::StaticClass();
+	/*AIControllerClass = ADyingIsGoodAIController::StaticClass();
 	AutoPossessAI = EAutoPossessAI::PlacedInWorldOrSpawned;
+	//Controller = GetWorld()->SpawnActor<ADyingIsGoodAIController>(GetActorLocation(), FRotator::ZeroRotator);
+	*/
 	SpawnDefaultController();
 
-
-	FVector TargetPosition = GetActorLocation();
-	TArray<AActor*> FoundActors;
-	UGameplayStatics::GetAllActorsWithTag(GetWorld(), FName(TEXT("Finish")), FoundActors);
-	for (size_t i = 0; i < FoundActors.Num(); i++)
+	if (Controller)
 	{
-		AActor* actor = FoundActors[i];
-		if (actor->Tags.Num() > 0)
-		{
-			UE_LOG(LogTemp, Warning, TEXT("Your message"));
-			//UE_LOG(LogTemp, Warning, TEXT("Your message %s"), *actor->Tags[0].ToString());
-		}
-
-		if (actor->ActorHasTag(FName(TEXT("Finish"))))
-		{
-			TargetPosition = actor->GetActorLocation();
-		}
+		UE_LOG(LogTemp, Warning, TEXT("created aicontroller %s"), *Controller->GetFName().ToString());
 	}
 
-	/*FVector TargetPosition = GetActorLocation();
-	const float distance = 1000.0f;
-	TargetPosition.X += FMath::FRandRange(-distance, distance);
-	TargetPosition.Y += FMath::FRandRange(-distance, distance);*/
-	UWorld* World = GetWorld();
-	if (World)
+	TArray<AActor*> FoundActors;
+	UGameplayStatics::GetAllActorsWithTag(GetWorld(), FName(TEXT("Finish")), FoundActors);
+	if (FoundActors.Num() > 0)
 	{
-		UNavigationSystem* const NavSys = GetWorld()->GetNavigationSystem();
-		NavSys->SimpleMoveToLocation(Controller, TargetPosition);
+		UWorld* World = GetWorld();
+		if (World)
+		{
+			UNavigationSystem* const NavSys = GetWorld()->GetNavigationSystem();
+			NavSys->SimpleMoveToLocation(Controller, FoundActors[0]->GetActorLocation());
+		}
 	}
 }
 

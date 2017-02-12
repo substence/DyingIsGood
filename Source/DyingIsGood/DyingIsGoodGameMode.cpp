@@ -4,6 +4,7 @@
 #include "DyingIsGoodGameMode.h"
 #include "DyingIsGoodPlayerController.h"
 #include "DyingIsGoodCharacter.h"
+#include "DyingIsGoodAIController.h"
 
 ADyingIsGoodGameMode::ADyingIsGoodGameMode()
 {
@@ -15,5 +16,16 @@ ADyingIsGoodGameMode::ADyingIsGoodGameMode()
 	if (PlayerPawnBPClass.Class != NULL)
 	{
 		DefaultPawnClass = PlayerPawnBPClass.Class;
+	}
+}
+
+void ADyingIsGoodGameMode::InitGameState()
+{
+	Super::InitGameState();
+	UE_LOG(LogTemp, Warning, TEXT("ADyingIsGoodGameModeInitGameState"));
+	UWorld* World = GetWorld();
+	if (World)
+	{
+		GetWorld()->SpawnActor<ADyingIsGoodAIController>(FVector::ZeroVector, FRotator::ZeroRotator);
 	}
 }

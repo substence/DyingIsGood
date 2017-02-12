@@ -12,8 +12,12 @@ UCLASS()
 class DYINGISGOOD_API ADyingIsGoodAIController : public AAIController
 {
 	GENERATED_BODY()
-	
-	
-	
-	
+public:
+	ADyingIsGoodAIController();
+	virtual void BeginPlay() override;
+	virtual void Tick(float DeltaSeconds) override;
+	virtual void PostRegisterAllComponents() override;
+private:
+	AActor* FindFirstTriggerWithTag(FName Name);
+	class UClass* MinionClass;
 };

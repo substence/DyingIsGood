@@ -10,6 +10,7 @@ class ADyingIsGoodGameMode : public AGameModeBase
 
 public:
 	ADyingIsGoodGameMode();
+	virtual void InitGameState() override;
 };
 
 

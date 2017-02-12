@@ -22,7 +22,7 @@ void ADyingIsGoodAIController::BeginPlay()
 	//UE_LOG(LogTemp, Warning, TEXT("ADyingIsGoodAIControllerBeginPlay"));
 
 	AActor* StartActor = FindFirstTriggerWithTag(FName(TEXT("Start")));
-	if (StartActor)
+	if (StartActor && MinionClass)
 	{
 		//UE_LOG(LogTemp, Warning, TEXT("ADyingIsGoodAIController found actor"));
 

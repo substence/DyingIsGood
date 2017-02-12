@@ -6,11 +6,9 @@
 
 ADyingIsGoodAIController::ADyingIsGoodAIController()
 {
-	UE_LOG(LogTemp, Warning, TEXT("ADyingIsGoodAIControllerADyingIsGoodAIController"));
 	static ConstructorHelpers::FClassFinder<APawn> PlayerPawnBPClass(TEXT("Blueprint'/Game/TopDownCPP/Blueprints/Minion_Blueprint'"));
 	if (PlayerPawnBPClass.Class != NULL)
 	{
-		UE_LOG(LogTemp, Warning, TEXT("ADyingIsGoodAIController found minion class"));
 		MinionClass = PlayerPawnBPClass.Class;
 	}
 }
@@ -19,23 +17,30 @@ void ADyingIsGoodAIController::BeginPlay()
 {
 	Super::BeginPlay();
 
-	//UE_LOG(LogTemp, Warning, TEXT("ADyingIsGoodAIControllerBeginPlay"));
-
 	AActor* StartActor = FindFirstTriggerWithTag(FName(TEXT("Start")));
 	if (StartActor && MinionClass)
 	{
-		//UE_LOG(LogTemp, Warning, TEXT("ADyingIsGoodAIController found actor"));
-
 		UWorld* World = GetWorld();
 		if (World)
 		{
-			FVector SpawnLocation = StartActor->GetActorLocation();
-			
-			for (size_t i = 0; i < 1; i++)
+			for (size_t i = 0; i < 2; i++)
 			{
-				UE_LOG(LogTemp, Warning, TEXT("ADyingIsGoodAIController spawning"));
+				FTransform SpawnTransform = StartActor->GetActorTransform();
+				FVector SpawnLocation = SpawnTransform.GetLocation();
+				const float Randomness = 500.0f;
+				SpawnLocation.X += FMath::RandRange(-Randomness, Randomness);
+				SpawnLocation.Y += FMath::RandRange(-Randomness, Randomness);
+				SpawnTransform.SetLocation(SpawnLocation);
 				FActorSpawnParameters SpawnParams;				
-				AActor* Spawned = World->SpawnActorAbsolute<AActor>(MinionClass, StartActor->GetActorTransform(), SpawnParams);
+				ACharacter* Spawned = World->SpawnActorAbsolute<ACharacter>(MinionClass, SpawnTransform, SpawnParams);
+				Possess(Spawned);
+
+				AActor* EndActor = FindFirstTriggerWithTag(FName(TEXT("Finish")));
+				if (EndActor)
+				{
+					UNavigationSystem* const NavSys = World->GetNavigationSystem();
+					NavSys->SimpleMoveToLocation(this, EndActor->GetActorLocation());
+				}
 			}
 		}
 	}
@@ -52,17 +57,20 @@ AActor* ADyingIsGoodAIController::FindFirstTriggerWithTag(FName TagName)
 	return NULL;
 }
 
-void ADyingIsGoodAIController::Tick(float DeltaTime)
+/*void ADyingIsGoodAIController::FindFirstTriggerWithTag(FName TagName)
 {
-	Super::Tick(DeltaTime);
-	//UE_LOG(LogTemp, Warning, TEXT("ADyingIsGoodAIControllerBeginPlay"));
+	UWorld* const World = GetWorld();
 
+	if (World != NULL)
+	{
+		World->GetTimerManager().SetTimer(TimerHandle_ReloadTimerExpired, this, &UWeapon::OnReloadTimerExpire, ReloadTime);
+	}
 }
 
-void ADyingIsGoodAIController::PostRegisterAllComponents()
+void ADyingIsGoodAIController::OnReloadTimerExpire()
 {
-	Super::PostRegisterAllComponents();
-	//UE_LOG(LogTemp, Warning, TEXT("ADyingIsGoodAIControllerBeginPlay"));
-}
+	bIsReloaded = true;
+	UE_LOG(LogTemp, Warning, TEXT("Reload Complete"));
+}*/
 
 

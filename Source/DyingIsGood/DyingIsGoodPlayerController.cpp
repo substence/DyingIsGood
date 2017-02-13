@@ -13,6 +13,12 @@ ADyingIsGoodPlayerController::ADyingIsGoodPlayerController()
 	DefaultMouseCursor = EMouseCursor::Crosshairs;
 }
 
+void ADyingIsGoodPlayerController::BeginPlay()
+{
+	Super::BeginPlay();
+	SetInputMode(FInputModeGameAndUI());
+}
+
 void ADyingIsGoodPlayerController::PlayerTick(float DeltaTime)
 {
 	Super::PlayerTick(DeltaTime);

@@ -14,8 +14,8 @@ AMinion::AMinion()
 	PrimaryActorTick.bCanEverTick = true;
 	//AIControllerClass = ADyingIsGoodAIController::StaticClass();
 	//AutoPossessAI = EAutoPossessAI::PlacedInWorldOrSpawned;
-	//Health = CreateDefaultSubobject<UHealthComponent>(TEXT("Health"));
-	//Health->SetHealth(10.0f);
+	Health = CreateDefaultSubobject<UHealthComponent>(TEXT("Health"));
+	Health->SetHealth(5.0f);
 }
 
 // Called when the game starts or when spawned
@@ -63,8 +63,8 @@ void AMinion::DamageActor(AActor* Actor)
 	{
 		return;
 	}
-	UE_LOG(LogTemp, Warning, TEXT("doing damage %s"), *Actor->GetFName().ToString());
+	//UE_LOG(LogTemp, Warning, TEXT("doing damage %s"), *Actor->GetFName().ToString());
 	//Controller->UnPossess();
-	//UGameplayStatics::ApplyDamage(Actor, 10.0f, Controller, this, UDamageType::StaticClass());
+	UGameplayStatics::ApplyDamage(Actor, Health->GetHealth(), Controller, this, UDamageType::StaticClass());
 	Destroy();
 }

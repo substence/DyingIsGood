@@ -7,6 +7,8 @@
 #include "DyingIsGoodAIController.h"
 #include "DyingIsGoodGameState.h"
 #include "Minion.h"
+#include "Engine.h"
+#include "Blueprint/UserWidget.h"
 
 ADyingIsGoodGameMode::ADyingIsGoodGameMode()
 {
@@ -24,7 +26,12 @@ ADyingIsGoodGameMode::ADyingIsGoodGameMode()
 	if (MinionBPClass.Class != NULL)
 	{
 		MinionClass = MinionBPClass.Class;
-		UE_LOG(LogTemp, Warning, TEXT("found minion class"));
+	}
+
+	static ConstructorHelpers::FClassFinder<UUserWidget> HUDBPClass(TEXT("WidgetBlueprint'/Game/TopDownCPP/Blueprints/HealthBar'"));
+	if (HUDBPClass.Class != NULL)
+	{
+		StartingWidgetClass = HUDBPClass.Class;
 	}
 
 	PrimaryActorTick.bCanEverTick = true;
@@ -52,6 +59,8 @@ void ADyingIsGoodGameMode::InitGameState()
 	{
 		TargetPoint = EndActor->GetActorTransform();
 	}
+
+	Throne = Cast<AThrone>(FindFirstTriggerWithTag(FName(TEXT("Finish"))));
 }
 
 void ADyingIsGoodGameMode::SpawnMinion(FTransform Start, FVector End)
@@ -99,10 +108,29 @@ void ADyingIsGoodGameMode::Tick(float DeltaTime)
 	float DurationSinceLastSpawn = GetWorld()->GetTimeSeconds() - TimeOfLastDeploy;
 	if (DurationSinceLastSpawn > DeployDelay)
 	{
-		for (size_t i = 0; i < 3; i++)
+		for (size_t i = 0; i < 2; i++)
 		{
 			UE_LOG(LogTemp, Warning, TEXT("deploying minion"));
 			SpawnMinion(SpawnPoint, TargetPoint.GetLocation());
 		}
+	}
+	if (Throne)
+	{
+		UHealthComponent* ThroneHealth = Cast<UHealthComponent>(Throne->GetComponentByClass(UHealthComponent::StaticClass()));
+
+		if (ThroneHealth != NULL && ThroneHealth->GetHealth() <= 0 && GEngine)
+		{
+			GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Cyan, TEXT("GAME OVER!"));
+		}
+	}
+}
+
+void ADyingIsGoodGameMode::BeginPlay()
+{
+	Super::BeginPlay();
+	CurrentWidget = CreateWidget<UUserWidget>(GetWorld(), StartingWidgetClass);
+	if (CurrentWidget)
+	{
+		CurrentWidget->AddToViewport();
 	}
 }

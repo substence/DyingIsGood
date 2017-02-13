@@ -16,10 +16,11 @@ public:
 	UHealthComponent();
 
 	float GetHealth();
+	void SetHealth(float Value);
 
 	virtual void OnRegister() override;
 
 private:
-	float Health;
+	float Health = 100.0f;
 	void OwnerTakesDamage(AActor* DamagedActor, float Damage, const class UDamageType* DamageType, class AController* InstigatedBy, AActor* DamageCauser);
 };

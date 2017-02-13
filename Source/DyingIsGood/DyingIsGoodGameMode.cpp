@@ -22,7 +22,6 @@ ADyingIsGoodGameMode::ADyingIsGoodGameMode()
 void ADyingIsGoodGameMode::InitGameState()
 {
 	Super::InitGameState();
-	UE_LOG(LogTemp, Warning, TEXT("ADyingIsGoodGameModeInitGameState"));
 	UWorld* World = GetWorld();
 	if (World)
 	{

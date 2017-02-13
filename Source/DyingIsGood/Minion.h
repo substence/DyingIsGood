@@ -3,6 +3,7 @@
 #pragma once
 
 #include "GameFramework/Character.h"
+#include "HealthComponent.h"
 #include "Minion.generated.h"
 
 UCLASS()
@@ -20,8 +21,9 @@ public:
 	// Called every frame
 	virtual void Tick( float DeltaSeconds ) override;
 
-	// Called to bind functionality to input
-	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
+	void DamageAllNearbyActors();
 
-	UStaticMeshComponent * SphereMesh;	
+	void DamageActor(AActor * Actor);
+
+	UHealthComponent* Health;
 };

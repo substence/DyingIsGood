@@ -18,32 +18,55 @@ void ADyingIsGoodAIController::BeginPlay()
 	Super::BeginPlay();
 
 	AActor* StartActor = FindFirstTriggerWithTag(FName(TEXT("Start")));
-	if (StartActor && MinionClass)
+	if (StartActor)
 	{
-		UWorld* World = GetWorld();
-		if (World)
-		{
-			for (size_t i = 0; i < 2; i++)
-			{
-				FTransform SpawnTransform = StartActor->GetActorTransform();
-				FVector SpawnLocation = SpawnTransform.GetLocation();
-				const float Randomness = 500.0f;
-				SpawnLocation.X += FMath::RandRange(-Randomness, Randomness);
-				SpawnLocation.Y += FMath::RandRange(-Randomness, Randomness);
-				SpawnTransform.SetLocation(SpawnLocation);
-				FActorSpawnParameters SpawnParams;				
-				ACharacter* Spawned = World->SpawnActorAbsolute<ACharacter>(MinionClass, SpawnTransform, SpawnParams);
-				Possess(Spawned);
+		SpawnPoint = StartActor->GetActorTransform();
+	}
+	AActor* EndActor = FindFirstTriggerWithTag(FName(TEXT("Finish")));
+	if (EndActor)
+	{
+		TargetPoint = EndActor->GetActorTransform();
+	}
+}
 
-				AActor* EndActor = FindFirstTriggerWithTag(FName(TEXT("Finish")));
-				if (EndActor)
-				{
-					UNavigationSystem* const NavSys = World->GetNavigationSystem();
-					NavSys->SimpleMoveToLocation(this, EndActor->GetActorLocation());
-				}
-			}
+void ADyingIsGoodAIController::Tick(float DeltaSeconds)
+{
+	//UE_LOG(LogTemp, Warning, TEXT("ADyingIsGoodAIControllerTick"));
+	Super::Tick(DeltaSeconds);
+	float DurationSinceLastSpawn = GetWorld()->GetTimeSeconds() - TimeOfLastDeploy;
+	if (DurationSinceLastSpawn > DeployDelay)
+	{
+		for (size_t i = 0; i < 3; i++)
+		{
+			//UE_LOG(LogTemp, Warning, TEXT("deploying minion"));
+			//SpawnMinion(SpawnPoint, TargetPoint.GetLocation());
 		}
 	}
+}
+
+void ADyingIsGoodAIController::SpawnMinion(FTransform Start, FVector End)
+{
+	UWorld* World = GetWorld();
+	if (!MinionClass || !World)
+	{
+		return;
+	}
+	FVector SpawnLocation = Start.GetLocation();
+	const float Randomness = 500.0f;
+	SpawnLocation.X += FMath::RandRange(-Randomness, Randomness);
+	SpawnLocation.Y += FMath::RandRange(-Randomness, Randomness);
+	Start.SetLocation(SpawnLocation);
+	FActorSpawnParameters SpawnParams;
+	ACharacter* Spawned = World->SpawnActorAbsolute<ACharacter>(MinionClass, Start, SpawnParams);
+	Possess(Spawned);
+
+	AActor* EndActor = FindFirstTriggerWithTag(FName(TEXT("Finish")));
+	if (!End.IsZero())
+	{
+		UNavigationSystem* const NavSys = World->GetNavigationSystem();
+		NavSys->SimpleMoveToLocation(this, End);
+	}
+	TimeOfLastDeploy = World->GetTimeSeconds();
 }
 
 AActor* ADyingIsGoodAIController::FindFirstTriggerWithTag(FName TagName)
@@ -56,21 +79,5 @@ AActor* ADyingIsGoodAIController::FindFirstTriggerWithTag(FName TagName)
 	}
 	return NULL;
 }
-
-/*void ADyingIsGoodAIController::FindFirstTriggerWithTag(FName TagName)
-{
-	UWorld* const World = GetWorld();
-
-	if (World != NULL)
-	{
-		World->GetTimerManager().SetTimer(TimerHandle_ReloadTimerExpired, this, &UWeapon::OnReloadTimerExpire, ReloadTime);
-	}
-}
-
-void ADyingIsGoodAIController::OnReloadTimerExpire()
-{
-	bIsReloaded = true;
-	UE_LOG(LogTemp, Warning, TEXT("Reload Complete"));
-}*/
 
 

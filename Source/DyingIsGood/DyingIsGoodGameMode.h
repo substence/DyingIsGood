@@ -3,7 +3,7 @@
 #include "GameFramework/GameModeBase.h"
 #include "DyingIsGoodGameMode.generated.h"
 
-UCLASS(minimalapi)
+UCLASS()
 class ADyingIsGoodGameMode : public AGameModeBase
 {
 	GENERATED_BODY()
@@ -11,6 +11,16 @@ class ADyingIsGoodGameMode : public AGameModeBase
 public:
 	ADyingIsGoodGameMode();
 	virtual void InitGameState() override;
+	virtual void Tick(float DeltaTime) override;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Classes)
+	class UClass* MinionClass;
+private:
+	float TimeOfLastDeploy;
+	float DeployDelay = 1.0f;
+	FTransform SpawnPoint;
+	FTransform TargetPoint;
+	void SpawnMinion(FTransform Start, FVector End);
+	AActor* FindFirstTriggerWithTag(FName Name);
 };
 
 

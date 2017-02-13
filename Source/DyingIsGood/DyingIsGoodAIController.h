@@ -15,7 +15,13 @@ class DYINGISGOOD_API ADyingIsGoodAIController : public AAIController
 public:
 	ADyingIsGoodAIController();
 	virtual void BeginPlay() override;
+	virtual void Tick(float DeltaSeconds) override;
 private:
+	void SpawnMinion(FTransform Start, FVector End);
 	AActor* FindFirstTriggerWithTag(FName Name);
 	class UClass* MinionClass;
+	FTransform SpawnPoint;
+	FTransform TargetPoint;
+	float TimeOfLastDeploy;
+	float DeployDelay = 15.0f;
 };

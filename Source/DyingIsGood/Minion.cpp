@@ -12,9 +12,10 @@ AMinion::AMinion()
 {
  	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
-
-	Health = CreateDefaultSubobject<UHealthComponent>(TEXT("Health"));
-	Health->SetHealth(10.0f);
+	//AIControllerClass = ADyingIsGoodAIController::StaticClass();
+	//AutoPossessAI = EAutoPossessAI::PlacedInWorldOrSpawned;
+	//Health = CreateDefaultSubobject<UHealthComponent>(TEXT("Health"));
+	//Health->SetHealth(10.0f);
 }
 
 // Called when the game starts or when spawned
@@ -31,6 +32,8 @@ void AMinion::BeginPlay()
 	Movement->RotationRate = FRotator(0.f, 640.f, 0.f);
 	Movement->bConstrainToPlane = true;
 	Movement->bSnapToPlaneAtStart = true;
+
+	SpawnDefaultController();
 }
 
 // Called every frame
@@ -60,16 +63,8 @@ void AMinion::DamageActor(AActor* Actor)
 	{
 		return;
 	}
-	if (Actor && (Health->GetHealth() != 0.f))
-	{
-		UE_LOG(LogTemp, Warning, TEXT("doing damage %s"), *Actor->GetFName().ToString());
-	}
-	FPointDamageEvent PointDmg;
-	UGameplayStatics::ApplyDamage(Actor, Health->GetHealth(), Controller, this, UDamageType::StaticClass());
-	//Actor->TakeDamage(Health->GetHealth(), PointDmg, Controller, this);
-	//UE_LOG(LogTemp, Warning, TEXT("hit and actor %s"), *Actor->GetFName().ToString());
-	//UE_LOG(LogTemp, Warning, TEXT("attacking for is %f"), Health->GetHealth());
-
+	UE_LOG(LogTemp, Warning, TEXT("doing damage %s"), *Actor->GetFName().ToString());
+	//Controller->UnPossess();
+	//UGameplayStatics::ApplyDamage(Actor, 10.0f, Controller, this, UDamageType::StaticClass());
 	Destroy();
-	//Actor->TakeDamage(Health->GetHealth(), , this->Controller, this);
 }

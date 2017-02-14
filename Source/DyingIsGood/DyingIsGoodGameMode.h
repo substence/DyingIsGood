@@ -3,6 +3,7 @@
 #include "GameFramework/GameModeBase.h"
 #include "Throne.h"
 #include "Blueprint/UserWidget.h"
+#include "ProgressBar.h"
 #include "DyingIsGoodGameMode.generated.h"
 
 UCLASS()
@@ -14,6 +15,7 @@ public:
 	ADyingIsGoodGameMode();
 	virtual void InitGameState() override;
 	virtual void Tick(float DeltaTime) override;
+	UHealthComponent* GetThroneHealth();
 	class UClass* MinionClass;
 	/** The widget class we will use as our menu when the game starts. */
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "UMG Game")
@@ -22,6 +24,8 @@ public:
 	/** The widget instance that we are using as our menu. */
 	UPROPERTY()
 	UUserWidget* CurrentWidget;
+
+	UProgressBar* ThroneProgressBar;
 
 	virtual void BeginPlay() override;
 

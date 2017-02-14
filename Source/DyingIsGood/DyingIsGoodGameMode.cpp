@@ -8,6 +8,7 @@
 #include "DyingIsGoodGameState.h"
 #include "Minion.h"
 #include "Engine.h"
+#include "ProgressBar.h"
 #include "Blueprint/UserWidget.h"
 
 ADyingIsGoodGameMode::ADyingIsGoodGameMode()
@@ -100,9 +101,7 @@ AActor* ADyingIsGoodGameMode::FindFirstTriggerWithTag(FName TagName)
 
 void ADyingIsGoodGameMode::Tick(float DeltaTime)
 {
-	//UE_LOG(LogTemp, Warning, TEXT("ticking"));
 	Super::Tick(DeltaTime);
-	//UE_LOG(LogTemp, Warning, TEXT("ticking"));
 
 	UWorld* World = GetWorld();
 	float DurationSinceLastSpawn = GetWorld()->GetTimeSeconds() - TimeOfLastDeploy;
@@ -114,15 +113,24 @@ void ADyingIsGoodGameMode::Tick(float DeltaTime)
 			SpawnMinion(SpawnPoint, TargetPoint.GetLocation());
 		}
 	}
+	UHealthComponent* ThroneHealth = GetThroneHealth();
+	if (ThroneHealth->GetHealth() <= 0 && GEngine)
+	{
+		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Cyan, TEXT("GAME OVER!"));
+	}
+	if (ThroneProgressBar)
+	{
+		ThroneProgressBar->SetPercent(ThroneHealth->GetHealthPercentage());
+	}
+}
+
+UHealthComponent* ADyingIsGoodGameMode::GetThroneHealth()
+{
 	if (Throne)
 	{
-		UHealthComponent* ThroneHealth = Cast<UHealthComponent>(Throne->GetComponentByClass(UHealthComponent::StaticClass()));
-
-		if (ThroneHealth != NULL && ThroneHealth->GetHealth() <= 0 && GEngine)
-		{
-			GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Cyan, TEXT("GAME OVER!"));
-		}
+		return Cast<UHealthComponent>(Throne->GetComponentByClass(UHealthComponent::StaticClass()));
 	}
+	return NULL;
 }
 
 void ADyingIsGoodGameMode::BeginPlay()
@@ -132,5 +140,6 @@ void ADyingIsGoodGameMode::BeginPlay()
 	if (CurrentWidget)
 	{
 		CurrentWidget->AddToViewport();
+		ThroneProgressBar = Cast<UProgressBar>(CurrentWidget->GetWidgetFromName(FName(TEXT("ProgressBar_103"))));
 	}
 }

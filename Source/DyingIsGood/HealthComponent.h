@@ -17,11 +17,15 @@ public:
 
 	float GetHealth();
 	void SetHealth(float Value);
+	void SetMaxHealth(float Value);
+
+	float GetHealthPercentage();
 
 	virtual void OnRegister() override;
 
 private:
 	float Health = 100.0f;
+	float MaxHealth = 100.0f;
 	UFUNCTION()
 	void OwnerTakesDamage(AActor* DamagedActor, float Damage, const class UDamageType* DamageType, class AController* InstigatedBy, AActor* DamageCauser);
 };

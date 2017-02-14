@@ -50,4 +50,14 @@ void UHealthComponent::SetHealth(float Value)
 	this->Health = Value;
 }
 
+void UHealthComponent::SetMaxHealth(float Value)
+{
+	this->MaxHealth = Value;
+}
+
+float UHealthComponent::GetHealthPercentage()
+{
+	return Health / MaxHealth;
+}
+
 

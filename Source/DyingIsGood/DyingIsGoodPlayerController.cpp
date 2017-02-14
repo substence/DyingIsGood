@@ -16,7 +16,6 @@ ADyingIsGoodPlayerController::ADyingIsGoodPlayerController()
 void ADyingIsGoodPlayerController::BeginPlay()
 {
 	Super::BeginPlay();
-	SetInputMode(FInputModeGameAndUI());
 }
 
 void ADyingIsGoodPlayerController::PlayerTick(float DeltaTime)

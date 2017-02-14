@@ -11,6 +11,7 @@ AThrone::AThrone()
  	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 	Health = CreateDefaultSubobject<UHealthComponent>(TEXT("Health"));
+	Health->SetMaxHealth(100.0f);
 	Health->SetHealth(100.0f);
 }
 

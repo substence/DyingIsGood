@@ -11,6 +11,7 @@ UImmolationSkill::UImmolationSkill()
 
 void UImmolationSkill::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction * ThisTickFunction)
 {
+	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
 	if (IsActive)
 	{
 		AActor* Owner = GetOwner();

@@ -1,6 +1,7 @@
 // Copyright 1998-2016 Epic Games, Inc. All Rights Reserved.
 #pragma once
 #include "GameFramework/Character.h"
+#include "HealthComponent.h"
 #include "DyingIsGoodCharacter.generated.h"
 
 UCLASS(Blueprintable)
@@ -10,6 +11,8 @@ class ADyingIsGoodCharacter : public ACharacter
 
 public:
 	ADyingIsGoodCharacter();
+
+	UHealthComponent* Health;
 
 	// Called every frame.
 	virtual void Tick(float DeltaSeconds) override;

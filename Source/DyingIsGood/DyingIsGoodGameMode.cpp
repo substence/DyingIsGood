@@ -113,22 +113,32 @@ void ADyingIsGoodGameMode::Tick(float DeltaTime)
 			SpawnMinion(SpawnPoint, TargetPoint.GetLocation());
 		}
 	}
-	UHealthComponent* ThroneHealth = GetThroneHealth();
-	if (ThroneHealth->GetHealth() <= 0 && GEngine)
+	UHealthComponent* Health = GetHealthComponentFromActor(Throne);
+	if (Health->GetHealth() <= 0 && GEngine)
 	{
 		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Cyan, TEXT("GAME OVER!"));
 	}
 	if (ThroneProgressBar)
 	{
-		ThroneProgressBar->SetPercent(ThroneHealth->GetHealthPercentage());
+		ThroneProgressBar->SetPercent(Health->GetHealthPercentage());
+	}
+	AController* Controller = GetInstigatorController();
+
+	if (Character)
+	{
+		Health = GetHealthComponentFromActor(Character);
+		if (Health && CharacterProgressBar)
+		{
+			CharacterProgressBar->SetPercent(Health->GetHealthPercentage());
+		}
 	}
 }
 
-UHealthComponent* ADyingIsGoodGameMode::GetThroneHealth()
+UHealthComponent* ADyingIsGoodGameMode::GetHealthComponentFromActor(AActor* Actor)
 {
-	if (Throne)
+	if (Actor)
 	{
-		return Cast<UHealthComponent>(Throne->GetComponentByClass(UHealthComponent::StaticClass()));
+		return Cast<UHealthComponent>(Actor->GetComponentByClass(UHealthComponent::StaticClass()));
 	}
 	return NULL;
 }
@@ -136,10 +146,18 @@ UHealthComponent* ADyingIsGoodGameMode::GetThroneHealth()
 void ADyingIsGoodGameMode::BeginPlay()
 {
 	Super::BeginPlay();
-	CurrentWidget = CreateWidget<UUserWidget>(GetWorld(), StartingWidgetClass);
+	UUserWidget* CurrentWidget = CreateWidget<UUserWidget>(GetWorld(), StartingWidgetClass);
 	if (CurrentWidget)
 	{
 		CurrentWidget->AddToViewport();
 		ThroneProgressBar = Cast<UProgressBar>(CurrentWidget->GetWidgetFromName(FName(TEXT("ProgressBar_103"))));
+		CharacterProgressBar = Cast<UProgressBar>(CurrentWidget->GetWidgetFromName(FName(TEXT("ProgressBar_0"))));
+	}
+	//UE_LOG(LogTemp, Warning, TEXT("found controller"), );
+	TArray<AActor*> FoundActors;
+	UGameplayStatics::GetAllActorsOfClass(GetWorld(), ADyingIsGoodCharacter::StaticClass(), FoundActors);
+	if (FoundActors.Num() > 0)
+	{
+		Character = Cast<ACharacter>(FoundActors[0]);
 	}
 }

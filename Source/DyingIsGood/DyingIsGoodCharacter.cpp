@@ -5,6 +5,7 @@
 #include "Runtime/CoreUObject/Public/UObject/ConstructorHelpers.h"
 #include "Runtime/Engine/Classes/Components/DecalComponent.h"
 #include "Kismet/HeadMountedDisplayFunctionLibrary.h"
+#include "ImmolationSkill.h"
 
 ADyingIsGoodCharacter::ADyingIsGoodCharacter()
 {
@@ -30,7 +31,7 @@ ADyingIsGoodCharacter::ADyingIsGoodCharacter()
 	CameraBoom->RelativeRotation = FRotator(-60.f, 0.f, 0.f);
 	CameraBoom->bDoCollisionTest = false; // Don't want to pull camera in when it collides with level
 
-										  // Create a camera...
+	// Create a camera...
 	TopDownCameraComponent = CreateDefaultSubobject<UCameraComponent>(TEXT("TopDownCamera"));
 	TopDownCameraComponent->SetupAttachment(CameraBoom, USpringArmComponent::SocketName);
 	TopDownCameraComponent->bUsePawnControlRotation = false; // Camera does not rotate relative to arm
@@ -49,6 +50,12 @@ ADyingIsGoodCharacter::ADyingIsGoodCharacter()
 	// Activate ticking in order to update the cursor every frame.
 	PrimaryActorTick.bCanEverTick = true;
 	PrimaryActorTick.bStartWithTickEnabled = true;
+
+	Health = CreateDefaultSubobject<UHealthComponent>(TEXT("Health"));
+	Health->SetMaxHealth(100.0f);
+	Health->SetHealth(100.0f);
+
+	CreateDefaultSubobject<UImmolationSkill>(TEXT("Immolation"));
 }
 
 void ADyingIsGoodCharacter::Tick(float DeltaSeconds)

@@ -23,6 +23,11 @@ public:
 
 	virtual void OnRegister() override;
 
+	virtual void BeginPlay() override;
+
+	UPROPERTY(EditDefaultsOnly)
+	float Max;
+
 private:
 	float Health = 100.0f;
 	float MaxHealth = 100.0f;

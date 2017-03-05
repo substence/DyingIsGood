@@ -11,12 +11,24 @@ UHealthComponent::UHealthComponent()
 void UHealthComponent::OnRegister()
 {
 	Super::OnRegister();
+	
+	if (Max)
+	{
+		SetMaxHealth(Max);
+		SetHealth(Max);
+	}
+
 	AActor* Owner = this->GetOwner();
 
 	if (Owner != NULL)
 	{
 		Owner->OnTakeAnyDamage.AddDynamic(this, &UHealthComponent::OwnerTakesDamage);
 	}
+}
+
+void UHealthComponent::BeginPlay()
+{
+	Super::BeginPlay();
 }
 
 void UHealthComponent::OwnerTakesDamage(AActor* DamagedActor, float Damage, UDamageType const* const DamageTypeCDO, class AController* InstigatedBy, AActor* DamageCauser)

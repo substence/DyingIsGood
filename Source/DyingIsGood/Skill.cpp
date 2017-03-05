@@ -29,23 +29,14 @@ void USkill::TickComponent( float DeltaTime, ELevelTick TickType, FActorComponen
 void USkill::OnRegister()
 {
 	Super::OnRegister();
-	AActor* Owner = GetOwner();
-	if (Owner)
+	UE_LOG(LogTemp, Warning, TEXT("registering"));
+	AController* Controller = UGameplayStatics::GetPlayerController(GetWorld(), 0);
+	UInputComponent* InputComponent = Controller->InputComponent;
+	if (InputComponent != NULL)
 	{
-		UE_LOG(LogTemp, Warning, TEXT("found owner"));
-		AController* Controller = Owner->GetInstigatorController();
-		if (Controller)
-		{
-			UE_LOG(LogTemp, Warning, TEXT("found controller"));
+		UE_LOG(LogTemp, Warning, TEXT("found inputcomponent"));
 
-			UInputComponent* InputComponent = Controller->InputComponent;
-			if (InputComponent)
-			{
-				UE_LOG(LogTemp, Warning, TEXT("found inputcomponent"));
-
-				InputComponent->BindAction(InputEvent, IE_Pressed, this, &USkill::OnInputPressed);
-			}
-		}
+		InputComponent->BindAction("Skill1", IE_Pressed, this, &USkill::OnInputPressed);
 	}
 }
 
@@ -56,6 +47,7 @@ void USkill::OnInputPressed()
 
 void USkill::ActivateSkill()
 {
+	UE_LOG(LogTemp, Warning, TEXT("activated skill"));
 	AActor* Owner = GetOwner();
 	UGameplayStatics::ApplyDamage(Owner, Cost, Owner->GetInstigatorController(), Owner, UDamageType::StaticClass());
 }

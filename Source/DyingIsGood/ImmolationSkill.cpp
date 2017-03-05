@@ -7,16 +7,22 @@
 UImmolationSkill::UImmolationSkill()
 {
 	PrimaryComponentTick.bCanEverTick = true;
+	Damage = 1.0f;
 }
 
 void UImmolationSkill::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction * ThisTickFunction)
 {
+	//UE_LOG(LogTemp, Warning, TEXT("ticking immolation"));
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
 	if (IsActive)
 	{
+		UE_LOG(LogTemp, Warning, TEXT("immolation active"));
+
 		AActor* Owner = GetOwner();
 		if (Owner->IsA<ACharacter>())
 		{
+			UE_LOG(LogTemp, Warning, TEXT("immolation has owner"));
+
 			//UGameplayStatics::ApplyDamage(Owner, Damage, Owner->GetInstigatorController(), Owner, UDamageType::StaticClass());
 			ACharacter* Character = Cast<ACharacter>(Owner);
 			TArray<AActor*> Touching;

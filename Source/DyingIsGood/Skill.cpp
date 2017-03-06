@@ -31,12 +31,15 @@ void USkill::OnRegister()
 	Super::OnRegister();
 	UE_LOG(LogTemp, Warning, TEXT("registering"));
 	AController* Controller = UGameplayStatics::GetPlayerController(GetWorld(), 0);
-	UInputComponent* InputComponent = Controller->InputComponent;
-	if (InputComponent != NULL)
+	if (Controller)
 	{
-		UE_LOG(LogTemp, Warning, TEXT("found inputcomponent"));
+		UInputComponent* InputComponent = Controller->InputComponent;
+		if (InputComponent != NULL)
+		{
+			UE_LOG(LogTemp, Warning, TEXT("found inputcomponent"));
 
-		InputComponent->BindAction("Skill1", IE_Pressed, this, &USkill::OnInputPressed);
+			InputComponent->BindAction("Skill1", IE_Pressed, this, &USkill::OnInputPressed);
+		}
 	}
 }
 

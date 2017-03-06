@@ -15,20 +15,22 @@ void UWeapon::BeginPlay()
 void UWeapon::TickComponent( float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction )
 {
 	Super::TickComponent( DeltaTime, TickType, ThisTickFunction );
-}
 
-bool UWeapon::isLoaded()
-{
-	return DurationToLoaded() <= 0;
+	if (!bIsLoaded && DurationToLoaded() <= 0)
+	{
+		bIsLoaded = true;
+	}
 }
 
 float UWeapon::DurationToLoaded()
 {
-	return GetWorld()->TimeSeconds - TimeFired;
+	return LoadDuration - (GetWorld()->TimeSeconds - TimeFired);
 }
 
 void UWeapon::Fire(TargetingParameters Parameters)
 {
+	//UE_LOG(LogTemp, Warning, TEXT("attempting fire"));
+	this->Parameters = Parameters;
 	if (!isLoaded())
 	{
 		return;
@@ -44,6 +46,7 @@ void UWeapon::DoFire()
 
 void UWeapon::StartReload()
 {
+	bIsLoaded = false;
 	TimeFired = GetWorld()->TimeSeconds;
 }
 

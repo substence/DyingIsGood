@@ -14,8 +14,8 @@ AMinion::AMinion()
 	PrimaryActorTick.bCanEverTick = true;
 	//AIControllerClass = ADyingIsGoodAIController::StaticClass();
 	//AutoPossessAI = EAutoPossessAI::PlacedInWorldOrSpawned;
-	Health = CreateDefaultSubobject<UHealthComponent>(TEXT("Health"));
-	Health->SetHealth(5.0f);
+	//Health = CreateDefaultSubobject<UHealthComponent>(TEXT("Health"));
+	//Health->SetHealth(5.0f);
 }
 
 // Called when the game starts or when spawned
@@ -33,14 +33,14 @@ void AMinion::BeginPlay()
 	Movement->bConstrainToPlane = true;
 	Movement->bSnapToPlaneAtStart = true;
 
-	SpawnDefaultController();
+	//SpawnDefaultController();
 }
 
 // Called every frame
 void AMinion::Tick( float DeltaTime )
 {
 	Super::Tick( DeltaTime );
-	DamageAllNearbyActors();
+	//DamageAllNearbyActors();
 }
 
 void AMinion::DamageAllNearbyActors()

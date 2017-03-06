@@ -9,11 +9,12 @@
 /**
  * 
  */
-UCLASS()
+UCLASS(ClassGroup = (Custom), meta = (BlueprintSpawnableComponent))
 class DYINGISGOOD_API ULauncherWeapon : public UWeapon
 {
 	GENERATED_BODY()
 public:
+	UPROPERTY(EditDefaultsOnly, Category = "Weapon")
 	TSubclassOf<class AProjectile> ProjectileClass;
 
 protected:

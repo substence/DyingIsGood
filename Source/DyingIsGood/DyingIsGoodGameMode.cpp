@@ -109,19 +109,23 @@ void ADyingIsGoodGameMode::Tick(float DeltaTime)
 	{
 		for (size_t i = 0; i < 2; i++)
 		{
-			UE_LOG(LogTemp, Warning, TEXT("deploying minion"));
-			SpawnMinion(SpawnPoint, TargetPoint.GetLocation());
+			//UE_LOG(LogTemp, Warning, TEXT("deploying minion"));
+			//SpawnMinion(SpawnPoint, TargetPoint.GetLocation());
 		}
 	}
 	UHealthComponent* Health = GetHealthComponentFromActor(Throne);
-	if (Health->GetHealth() <= 0 && GEngine)
+	if (Health)
 	{
-		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Cyan, TEXT("GAME OVER!"));
+		if (Health->GetHealth() <= 0 && GEngine)
+		{
+			GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Cyan, TEXT("GAME OVER!"));
+		}
+		if (ThroneProgressBar)
+		{
+			ThroneProgressBar->SetPercent(Health->GetHealthPercentage());
+		}
 	}
-	if (ThroneProgressBar)
-	{
-		ThroneProgressBar->SetPercent(Health->GetHealthPercentage());
-	}
+
 	AController* Controller = GetInstigatorController();
 
 	if (Character)

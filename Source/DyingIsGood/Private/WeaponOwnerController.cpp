@@ -12,15 +12,25 @@ void AWeaponOwnerController::Tick(float DeltaSeconds)
 	{
 		const float Range = Tower->Range;
 		const FVector TowerLocation = Tower->GetActorLocation();
-
 		for (TActorIterator<AActor> ActorItr(GetWorld()); ActorItr; ++ActorItr)
 		{
 			FVector ActorLocation = ActorItr->GetActorLocation();
-			if (FVector::DistSquaredXY(ActorLocation, TowerLocation) < Range)
+			if (ActorLocation == TowerLocation)
 			{
-				TArray<UActorComponent*> Weapons = ActorItr->GetComponentsByClass(UWeapon::StaticClass());
+				continue;
+			}
+			float DistanceToTarget = FVector::Dist(ActorLocation, TowerLocation);
+			//UE_LOG(LogTemp, Warning, TEXT("range to %f"), DistanceToTarget);
+
+			if (DistanceToTarget < Range)
+			{
+				//UE_LOG(LogTemp, Warning, TEXT("found potential target in range"));
+
+				TArray<UActorComponent*> Weapons = Tower->GetComponentsByClass(UWeapon::StaticClass());
 				for (size_t i = 0; i < Weapons.Num(); i++)
 				{
+					//UE_LOG(LogTemp, Warning, TEXT("found potential target in range with weapon"));
+
 					TargetingParameters Parameters;
 					Parameters.TargetPoint = ActorLocation;
 					UWeapon* Weapon = Cast<UWeapon>(Weapons[i]);

@@ -21,15 +21,20 @@ public:
 	// Called every frame
 	virtual void TickComponent( float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction ) override;
 
-	bool isLoaded();
+	bool isLoaded() const { return bIsLoaded; };
 
 	float DurationToLoaded();
 
 	void Fire(TargetingParameters Parameters);
 
 	void StartReload();
+
+	UPROPERTY(EditDefaultsOnly, Category = "Weapon")
+	float LoadDuration;
 protected:
 	virtual void DoFire();
+	TargetingParameters Parameters;
 private:
 	float TimeFired = 0.0f;
+	bool bIsLoaded = true;
 };

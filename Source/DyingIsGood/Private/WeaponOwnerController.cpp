@@ -19,12 +19,17 @@ void AWeaponOwnerController::Tick(float DeltaSeconds)
 			{
 				continue;
 			}
+
+			if (!ActorItr->IsA(ACharacter::StaticClass()))
+			{
+				continue;
+			}
 			float DistanceToTarget = FVector::Dist(ActorLocation, TowerLocation);
 			//UE_LOG(LogTemp, Warning, TEXT("range to %f"), DistanceToTarget);
 
 			if (DistanceToTarget < Range)
 			{
-				//UE_LOG(LogTemp, Warning, TEXT("found potential target in range"));
+				//UE_LOG(LogTemp, Warning, TEXT("found potential target in range %s"), *ActorItr->GetName());
 
 				TArray<UActorComponent*> Weapons = Tower->GetComponentsByClass(UWeapon::StaticClass());
 				for (size_t i = 0; i < Weapons.Num(); i++)
@@ -33,9 +38,11 @@ void AWeaponOwnerController::Tick(float DeltaSeconds)
 
 					TargetingParameters Parameters;
 					Parameters.TargetPoint = ActorLocation;
+					Parameters.TargetActor = *ActorItr;
 					UWeapon* Weapon = Cast<UWeapon>(Weapons[i]);
 					Weapon->Fire(Parameters);
 				}
+				return;
 			}
 		}
 	}

@@ -2,6 +2,7 @@
 
 #include "DyingIsGood.h"
 #include "Projectile.h"
+#include "../../Public/Components/Weapon.h"
 
 
 // Sets default values
@@ -17,6 +18,39 @@ void AProjectile::BeginPlay()
 {
 	Super::BeginPlay();
 	
+	if (RootComponent && RootComponent->IsA(UPrimitiveComponent::StaticClass()))
+	{
+		UPrimitiveComponent* PrimitiveComponent = Cast<UPrimitiveComponent>(RootComponent);
+		if (PrimitiveComponent)
+		{
+			PrimitiveComponent->OnComponentBeginOverlap.AddDynamic(this, &AProjectile::OnCollision);
+		}
+	}
+}
+
+void AProjectile::OnCollision(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
+{
+	AActor* Target = GetIntededTarget();
+	if (Target && OtherActor && Target == OtherActor)
+	{
+		Destroy();
+		//todo : do damage to OtherActor's healthcomponent based on this projectile's damage
+	}
+}
+
+AActor* AProjectile::GetIntededTarget()
+{
+	AActor* Target;
+	if (Owner && Owner->IsA(UWeapon::StaticClass()))
+	{
+		UWeapon* Weapon = Cast<UWeapon>(Owner);
+		if (Weapon)
+		{
+			Target = Weapon->GetTargetingParameters().TargetActor;
+			return Target;
+		}
+	}
+	return NULL;
 }
 
 // Called every frame

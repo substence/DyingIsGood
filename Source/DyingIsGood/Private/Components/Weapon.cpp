@@ -30,8 +30,8 @@ float UWeapon::DurationToLoaded()
 void UWeapon::Fire(TargetingParameters Parameters)
 {
 	//UE_LOG(LogTemp, Warning, TEXT("attempting fire"));
-	this->Parameters = Parameters;
-	if (!isLoaded())
+	this->TargetParameters = Parameters;
+	if (!IsLoaded())
 	{
 		return;
 	}

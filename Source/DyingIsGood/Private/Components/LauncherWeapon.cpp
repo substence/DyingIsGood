@@ -19,23 +19,28 @@ void ULauncherWeapon::LaunchAtDirection()
 		// spawn the projectile
 		FTransform SpawnTransform = GetOwner()->GetTransform();
 		FVector SpawnPoint = SpawnTransform.GetLocation();
+		FVector TargetPoint = TargetParameters.TargetActor ? TargetParameters.TargetActor->GetActorLocation() : TargetParameters.TargetPoint;
+		FVector Direction = TargetParameters.TargetPoint - SpawnPoint;
+		FRotator Rotation = Direction.Rotation();
 		SpawnPoint.Z += 100.0f;
-		AProjectile* Projectile = World->SpawnActor<AProjectile>(ProjectileClass, SpawnPoint, GetOwner()->GetActorRotation());
+		AProjectile* Projectile = World->SpawnActor<AProjectile>(ProjectileClass, SpawnPoint, Rotation);
 
 		//fire the projectile
 		if (Projectile)
 		{
-			UMovementComponent* MovementComponent = Cast<UMovementComponent>(Projectile->GetComponentByClass(UMovementComponent::StaticClass()));
+			Projectile->Owner = this;
+			UProjectileMovementComponent* MovementComponent = Cast<UProjectileMovementComponent>(Projectile->GetComponentByClass(UProjectileMovementComponent::StaticClass()));
 			if (MovementComponent)
 			{
-				UE_LOG(LogTemp, Warning, TEXT("fired"));
-				FVector Direction = SpawnPoint - Parameters.TargetPoint;
-				Direction.Normalize();
-				MovementComponent->Velocity = Direction;
+				AActor* Target = TargetParameters.TargetActor;
+				UE_LOG(LogTemp, Warning, TEXT("fired at %s"), *Target->GetName());
+				//Seek target
+				if (Target)
+				{
+					MovementComponent->HomingTargetComponent = Target->GetRootComponent();
+				}
 			}
 		}
-
-		UE_LOG(LogTemp, Warning, TEXT("fired"));
 	}
 }
 

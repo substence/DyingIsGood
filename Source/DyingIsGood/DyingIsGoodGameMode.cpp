@@ -153,9 +153,9 @@ void ADyingIsGoodGameMode::BeginPlay()
 	UUserWidget* CurrentWidget = CreateWidget<UUserWidget>(GetWorld(), StartingWidgetClass);
 	if (CurrentWidget)
 	{
-		CurrentWidget->AddToViewport();
-		ThroneProgressBar = Cast<UProgressBar>(CurrentWidget->GetWidgetFromName(FName(TEXT("ProgressBar_103"))));
-		CharacterProgressBar = Cast<UProgressBar>(CurrentWidget->GetWidgetFromName(FName(TEXT("ProgressBar_0"))));
+		//CurrentWidget->AddToViewport();
+		//ThroneProgressBar = Cast<UProgressBar>(CurrentWidget->GetWidgetFromName(FName(TEXT("ProgressBar_103"))));
+		//CharacterProgressBar = Cast<UProgressBar>(CurrentWidget->GetWidgetFromName(FName(TEXT("ProgressBar_0"))));
 	}
 	//UE_LOG(LogTemp, Warning, TEXT("found controller"), );
 	TArray<AActor*> FoundActors;

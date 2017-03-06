@@ -21,7 +21,8 @@ public:
 	// Called every frame
 	virtual void TickComponent( float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction ) override;
 
-	bool isLoaded() const { return bIsLoaded; };
+	bool IsLoaded() const { return bIsLoaded; };
+	TargetingParameters GetTargetingParameters() const { return TargetParameters; };
 
 	float DurationToLoaded();
 
@@ -33,7 +34,7 @@ public:
 	float LoadDuration;
 protected:
 	virtual void DoFire();
-	TargetingParameters Parameters;
+	TargetingParameters TargetParameters;
 private:
 	float TimeFired = 0.0f;
 	bool bIsLoaded = true;

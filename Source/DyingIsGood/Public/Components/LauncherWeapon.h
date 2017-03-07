@@ -3,7 +3,7 @@
 #pragma once
 
 #include "Weapon.h"
-#include "../../Public/Projectile.h"
+#include "../Actors/Projectile.h"
 #include "LauncherWeapon.generated.h"
 
 /**

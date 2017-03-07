@@ -29,6 +29,7 @@ void ULauncherWeapon::LaunchAtDirection()
 		if (Projectile)
 		{
 			Projectile->Owner = this;
+			Projectile->TargetParameters = TargetParameters;
 			UProjectileMovementComponent* MovementComponent = Cast<UProjectileMovementComponent>(Projectile->GetComponentByClass(UProjectileMovementComponent::StaticClass()));
 			if (MovementComponent)
 			{

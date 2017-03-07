@@ -2,12 +2,12 @@
 
 #pragma once
 
-#include "GameFramework/Character.h"
+#include "FieldActor.h"
 #include "HealthComponent.h"
 #include "Minion.generated.h"
 
 UCLASS()
-class DYINGISGOOD_API AMinion : public ACharacter
+class DYINGISGOOD_API AMinion : public AFieldActor
 {
 	GENERATED_BODY()
 

@@ -8,16 +8,17 @@
 void AWeaponOwnerController::Tick(float DeltaSeconds)
 {	
 	AFieldActor* Tower = Cast<AFieldActor>(GetPawn());
+	//UE_LOG(LogTemp, Warning, TEXT("issuing move command on %s"), *Tower->GetName());
 	if (Tower)
 	{
 		const float Range = Tower->Range;
 		const FVector TowerLocation = Tower->GetActorLocation();
-		TArray<AActor*> Actors = GetTargetableActorsSortedByDistance();
+		TArray<AFieldActor*> Actors = GetTargetableActorsSortedByDistance(Tower);
 		if (Actors.Num() > 0)
 		{
 			UNavigationSystem* const NavSys = GetWorld()->GetNavigationSystem();
 			NavSys->SimpleMoveToLocation(this, Actors[Actors.Num() - 1]->GetActorLocation());
-			UE_LOG(LogTemp, Warning, TEXT("issuing move command"));
+			//UE_LOG(LogTemp, Warning, TEXT("issuing move command on %s"), *Tower->GetName());
 		}
 		for (size_t i = 0; i < Actors.Num(); i++)
 		{
@@ -48,24 +49,26 @@ void AWeaponOwnerController::Tick(float DeltaSeconds)
 }
 
 
-TArray<AActor*> AWeaponOwnerController::GetTargetableActorsSortedByDistance()
+TArray<AFieldActor*> AWeaponOwnerController::GetTargetableActorsSortedByDistance(AFieldActor* PossessdPawn)
 {
-	TArray<AActor*> Actors;
-	for (TActorIterator<AActor> ActorItr(GetWorld()); ActorItr; ++ActorItr)
+	TArray<AFieldActor*> Actors;
+	FVector PawnLocation = PossessdPawn->GetActorLocation();
+	for (TActorIterator<AFieldActor> ActorItr(GetWorld()); ActorItr; ++ActorItr)
 	{
-		if (IsActorTargetable(*ActorItr))
+		if (IsActorTargetable(PossessdPawn, *ActorItr))
 		{
 			Actors.Add(*ActorItr);
 		}
 	}
-	/*Actors.Sort([](AActor* ip1, AActor* ip2) {
-		return ip1->GetUniqueID() > ip2->GetUniqueID();//todo
-	});*/
+	Actors.Sort([PawnLocation](AFieldActor& ip1, AFieldActor& ip2)
+	{
+		return FVector::Dist(ip1.GetActorLocation(), PawnLocation) > FVector::Dist(ip2.GetActorLocation(), PawnLocation);
+	});
 	return Actors;
 }
 
-bool AWeaponOwnerController::IsActorTargetable(AActor* Actor)
+bool AWeaponOwnerController::IsActorTargetable(AFieldActor* PossessdPawn, AFieldActor* Actor)
 {
-	return Actor->IsA(AFieldActor::StaticClass()) && Actor != this->GetPawn();
+	return Actor->IsA(AFieldActor::StaticClass()) && Actor != PossessdPawn && PossessdPawn->TeamIndex != Actor->TeamIndex;
 }
 

@@ -27,5 +27,5 @@ public:
 	float Range;	
 
 	UPROPERTY(EditInstanceOnly)
-	int DefaultPlayerIndex;
+	int TeamIndex;
 };

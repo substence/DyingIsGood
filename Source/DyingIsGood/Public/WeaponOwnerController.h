@@ -15,6 +15,6 @@ class DYINGISGOOD_API AWeaponOwnerController : public AAIController
 
 public:
 	virtual void Tick(float DeltaSeconds) override;	
-	TArray<AActor*> GetTargetableActorsSortedByDistance();
-	bool IsActorTargetable(AActor * Actor);
+	TArray<AFieldActor*> GetTargetableActorsSortedByDistance(AFieldActor* PossessdPawn);
+	bool IsActorTargetable(AFieldActor* PossessdPawn, AFieldActor* Actor);
 };

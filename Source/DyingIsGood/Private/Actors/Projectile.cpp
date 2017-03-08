@@ -34,6 +34,9 @@ void AProjectile::OnCollision(UPrimitiveComponent* OverlappedComp, AActor* Other
 	if (Target && OtherActor && Target == OtherActor)
 	{
 		Destroy();
+		FDamageEvent DamageEvent;
+		UE_LOG(LogTemp, Warning, TEXT("dealing damage"));
+		Target->TakeDamage(Damage, DamageEvent, GetInstigatorController(), this);
 		//todo : do damage to OtherActor's healthcomponent based on this projectile's damage
 	}
 }

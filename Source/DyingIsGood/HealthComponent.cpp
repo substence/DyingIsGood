@@ -22,6 +22,8 @@ void UHealthComponent::OnRegister()
 
 	if (Owner != NULL)
 	{
+		UE_LOG(LogTemp, Warning, TEXT("adding take damage listener"));
+
 		Owner->OnTakeAnyDamage.AddDynamic(this, &UHealthComponent::OwnerTakesDamage);
 	}
 }
@@ -35,11 +37,11 @@ void UHealthComponent::OwnerTakesDamage(AActor* DamagedActor, float Damage, UDam
 {
 	Health -= Damage;
 
-	UE_LOG(LogTemp, Warning, TEXT("health is %f"), Health);
+	UE_LOG(LogTemp, Warning, TEXT("owner took damage, health is %f"), Health);
 
 	if (Health <= 0.0f)
 	{
-
+		GetOwner()->Destroy();
 	}
 }
 

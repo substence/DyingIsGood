@@ -14,7 +14,14 @@
 ADyingIsGoodGameMode::ADyingIsGoodGameMode()
 {
 	// use our custom PlayerController class
-	PlayerControllerClass = ADyingIsGoodPlayerController::StaticClass();
+	PlayerControllerClass = PlayerControllerBlueprint;
+	if (!PlayerControllerBlueprint)
+	{
+		//UE_LOG(LogTemp, Warning, TEXT("failed to create PlayerControllerClass %s"), *PlayerControllerBlueprint->GetName());
+		UE_LOG(LogTemp, Warning, TEXT("failed to create PlayerControllerClass") );
+
+		PlayerControllerClass = ADyingIsGoodPlayerController::StaticClass();
+	}
 
 	// set default pawn class to our Blueprinted character
 	static ConstructorHelpers::FClassFinder<APawn> PlayerPawnBPClass(TEXT("/Game/TopDownCPP/Blueprints/TopDownCharacter"));

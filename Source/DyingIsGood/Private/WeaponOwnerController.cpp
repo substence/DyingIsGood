@@ -16,7 +16,8 @@ void AWeaponOwnerController::Tick(float DeltaSeconds)
 		if (Actors.Num() > 0)
 		{
 			UNavigationSystem* const NavSys = GetWorld()->GetNavigationSystem();
-			NavSys->SimpleMoveToLocation(this, Actors[0]->GetActorLocation());
+			NavSys->SimpleMoveToLocation(this, Actors[Actors.Num() - 1]->GetActorLocation());
+			UE_LOG(LogTemp, Warning, TEXT("issuing move command"));
 		}
 		for (size_t i = 0; i < Actors.Num(); i++)
 		{

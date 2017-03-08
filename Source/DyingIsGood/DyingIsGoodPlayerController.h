@@ -1,6 +1,7 @@
 // Copyright 1998-2016 Epic Games, Inc. All Rights Reserved.
 #pragma once
 #include "GameFramework/PlayerController.h"
+#include "Public/Actors/FieldActor.h"
 #include "DyingIsGoodPlayerController.generated.h"
 
 UCLASS()
@@ -12,6 +13,9 @@ public:
 	ADyingIsGoodPlayerController();
 
 	virtual void BeginPlay() override;
+
+	UPROPERTY(EditDefaultsOnly)
+	TSubclassOf<class AFieldActor> FieldActorToSpawn;
 
 protected:
 	/** True if the controlled character should navigate to the mouse cursor. */

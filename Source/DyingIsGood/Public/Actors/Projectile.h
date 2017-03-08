@@ -28,6 +28,7 @@ public:
 
 	UObject* Owner;
 
+	UPROPERTY(EditDefaultsOnly)
 	float Damage;
 
 	TargetingParameters TargetParameters;

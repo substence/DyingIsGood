@@ -25,4 +25,7 @@ public:
 
 	UPROPERTY(EditDefaultsOnly)
 	float Range;	
+
+	UPROPERTY(EditInstanceOnly)
+	int DefaultPlayerIndex;
 };

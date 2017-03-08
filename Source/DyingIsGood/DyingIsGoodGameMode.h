@@ -20,6 +20,10 @@ public:
 	/** The widget class we will use as our menu when the game starts. */
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "UMG Game")
 	TSubclassOf<UUserWidget> StartingWidgetClass;
+
+	UPROPERTY(EditDefaultsOnly)
+	TSubclassOf<APlayerController> PlayerControllerBlueprint;
+
 	virtual void BeginPlay() override;
 
 private:

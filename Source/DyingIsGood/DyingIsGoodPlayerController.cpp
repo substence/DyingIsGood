@@ -108,11 +108,21 @@ void ADyingIsGoodPlayerController::SetNewMoveDestination(const FVector DestLocat
 void ADyingIsGoodPlayerController::OnSetDestinationPressed()
 {
 	// set flag to keep updating destination until released
-	bMoveToMouseCursor = true;
+	//bMoveToMouseCursor = true;
 }
 
 void ADyingIsGoodPlayerController::OnSetDestinationReleased()
 {
 	// clear flag to indicate we should stop updating the destination
-	bMoveToMouseCursor = false;
+	//bMoveToMouseCursor = false;
+	if (FieldActorToSpawn)
+	{
+		FHitResult result;
+		GetHitResultUnderCursor(ECollisionChannel::ECC_WorldStatic, false, result);
+		if (!result.ImpactPoint.IsZero())
+		{
+			FVector_NetQuantize ImpactPoint = result.ImpactPoint;
+			AFieldActor* Projectile = GetWorld()->SpawnActor<AFieldActor>(FieldActorToSpawn, ImpactPoint, FRotator::ZeroRotator);
+		}
+	}
 }

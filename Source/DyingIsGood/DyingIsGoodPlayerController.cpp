@@ -6,6 +6,7 @@
 #include "Runtime/Engine/Classes/Components/DecalComponent.h"
 #include "Kismet/HeadMountedDisplayFunctionLibrary.h"
 #include "DyingIsGoodCharacter.h"
+#include "DyingIsGoodAIController.h"
 
 ADyingIsGoodPlayerController::ADyingIsGoodPlayerController()
 {
@@ -34,8 +35,8 @@ void ADyingIsGoodPlayerController::SetupInputComponent()
 	// set up gameplay key bindings
 	Super::SetupInputComponent();
 
-	InputComponent->BindAction("SetDestination", IE_Pressed, this, &ADyingIsGoodPlayerController::OnSetDestinationPressed);
-	InputComponent->BindAction("SetDestination", IE_Released, this, &ADyingIsGoodPlayerController::OnSetDestinationReleased);
+	//InputComponent->BindAction("SetDestination", IE_Pressed, this, &ADyingIsGoodPlayerController::OnSetDestinationPressed);
+	InputComponent->BindAction("SetDestination", IE_Released, this, &ADyingIsGoodPlayerController::SpawnFieldActorAtMouse);
 
 	// support touch devices 
 	InputComponent->BindTouch(EInputEvent::IE_Pressed, this, &ADyingIsGoodPlayerController::MoveToTouchLocation);
@@ -105,16 +106,8 @@ void ADyingIsGoodPlayerController::SetNewMoveDestination(const FVector DestLocat
 	}
 }
 
-void ADyingIsGoodPlayerController::OnSetDestinationPressed()
+void ADyingIsGoodPlayerController::SpawnFieldActorAtMouse()
 {
-	// set flag to keep updating destination until released
-	//bMoveToMouseCursor = true;
-}
-
-void ADyingIsGoodPlayerController::OnSetDestinationReleased()
-{
-	// clear flag to indicate we should stop updating the destination
-	//bMoveToMouseCursor = false;
 	if (FieldActorToSpawn)
 	{
 		FHitResult result;

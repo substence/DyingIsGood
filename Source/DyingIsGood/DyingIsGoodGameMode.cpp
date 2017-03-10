@@ -18,7 +18,7 @@ ADyingIsGoodGameMode::ADyingIsGoodGameMode()
 	if (!PlayerControllerBlueprint)
 	{
 		//UE_LOG(LogTemp, Warning, TEXT("failed to create PlayerControllerClass %s"), *PlayerControllerBlueprint->GetName());
-		UE_LOG(LogTemp, Warning, TEXT("failed to create PlayerControllerClass") );
+		//UE_LOG(LogTemp, Warning, TEXT("failed to create PlayerControllerClass") );
 
 		PlayerControllerClass = ADyingIsGoodPlayerController::StaticClass();
 	}
@@ -27,7 +27,7 @@ ADyingIsGoodGameMode::ADyingIsGoodGameMode()
 	static ConstructorHelpers::FClassFinder<APawn> PlayerPawnBPClass(TEXT("/Game/TopDownCPP/Blueprints/TopDownCharacter"));
 	if (PlayerPawnBPClass.Class != NULL)
 	{
-		DefaultPawnClass = PlayerPawnBPClass.Class;
+		//DefaultPawnClass = PlayerPawnBPClass.Class;
 	}
 
 	static ConstructorHelpers::FClassFinder<APawn> MinionBPClass(TEXT("Blueprint'/Game/TopDownCPP/Blueprints/Minion_Blueprint'"));

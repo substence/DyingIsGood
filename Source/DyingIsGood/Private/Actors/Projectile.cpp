@@ -18,13 +18,17 @@ void AProjectile::BeginPlay()
 {
 	Super::BeginPlay();
 	
-	if (RootComponent && RootComponent->IsA(UPrimitiveComponent::StaticClass()))
+	UE_LOG(LogTemp, Warning, TEXT("adding projectile"));
+
+	UPrimitiveComponent* PrimitiveComponent = Cast<UPrimitiveComponent>(GetComponentByClass(UPrimitiveComponent::StaticClass()));
+
+	//todo what if there's multiple primitive components
+	//UPrimitiveComponent* PrimitiveComponent = Cast<UPrimitiveComponent>(RootComponent);
+	if (PrimitiveComponent)
 	{
-		UPrimitiveComponent* PrimitiveComponent = Cast<UPrimitiveComponent>(RootComponent);
-		if (PrimitiveComponent)
-		{
-			PrimitiveComponent->OnComponentBeginOverlap.AddDynamic(this, &AProjectile::OnCollision);
-		}
+		UE_LOG(LogTemp, Warning, TEXT("root component is a primitive"));
+		UE_LOG(LogTemp, Warning, TEXT("adding overlap listener"));
+		PrimitiveComponent->OnComponentBeginOverlap.AddDynamic(this, &AProjectile::OnCollision);
 	}
 }
 

@@ -5,7 +5,7 @@
 
 void ULauncherWeapon::DoFire()
 {
-	UE_LOG(LogTemp, Warning, TEXT("launcher weapon firing"));
+	//UE_LOG(LogTemp, Warning, TEXT("launcher weapon firing"));
 
 	Super::DoFire();
 	LaunchAtDirection();
@@ -34,7 +34,7 @@ void ULauncherWeapon::LaunchAtDirection()
 			if (MovementComponent)
 			{
 				AActor* Target = TargetParameters.TargetActor;
-				UE_LOG(LogTemp, Warning, TEXT("fired at %s"), *Target->GetName());
+				//UE_LOG(LogTemp, Warning, TEXT("fired at %s"), *Target->GetName());
 				//Seek target
 				if (Target)
 				{

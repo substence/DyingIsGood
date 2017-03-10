@@ -24,4 +24,5 @@ private:
 	FTransform TargetPoint;
 	float TimeOfLastDeploy;
 	float DeployDelay = 15.0f;
-};
+	void SpawnFieldActorAtMouse();
+ };

@@ -18,7 +18,7 @@ void AProjectile::BeginPlay()
 {
 	Super::BeginPlay();
 	
-	UE_LOG(LogTemp, Warning, TEXT("adding projectile"));
+	//UE_LOG(LogTemp, Warning, TEXT("adding projectile"));
 
 	UPrimitiveComponent* PrimitiveComponent = Cast<UPrimitiveComponent>(GetComponentByClass(UPrimitiveComponent::StaticClass()));
 
@@ -26,8 +26,8 @@ void AProjectile::BeginPlay()
 	//UPrimitiveComponent* PrimitiveComponent = Cast<UPrimitiveComponent>(RootComponent);
 	if (PrimitiveComponent)
 	{
-		UE_LOG(LogTemp, Warning, TEXT("root component is a primitive"));
-		UE_LOG(LogTemp, Warning, TEXT("adding overlap listener"));
+		//UE_LOG(LogTemp, Warning, TEXT("root component is a primitive"));
+		//UE_LOG(LogTemp, Warning, TEXT("adding overlap listener"));
 		PrimitiveComponent->OnComponentBeginOverlap.AddDynamic(this, &AProjectile::OnCollision);
 	}
 }
@@ -39,7 +39,7 @@ void AProjectile::OnCollision(UPrimitiveComponent* OverlappedComp, AActor* Other
 	{
 		Destroy();
 		FDamageEvent DamageEvent;
-		UE_LOG(LogTemp, Warning, TEXT("dealing damage"));
+		//UE_LOG(LogTemp, Warning, TEXT("dealing damage"));
 		Target->TakeDamage(Damage, DamageEvent, GetInstigatorController(), this);
 		//todo : do damage to OtherActor's healthcomponent based on this projectile's damage
 	}
@@ -65,6 +65,5 @@ AActor* AProjectile::GetIntededTarget()
 void AProjectile::Tick( float DeltaTime )
 {
 	Super::Tick( DeltaTime );
-
 }
 

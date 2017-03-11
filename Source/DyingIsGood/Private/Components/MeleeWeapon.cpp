@@ -7,11 +7,11 @@ void UMeleeWeapon::DoFire()
 {
 	AActor* Target = TargetParameters.TargetActor;
 	AActor* Owner = GetOwner();
-	UE_LOG(LogTemp, Warning, TEXT("melee attemping fire"));
+	//UE_LOG(LogTemp, Warning, TEXT("melee attemping fire"));
 
 	if (Target && Owner)
 	{
-		UE_LOG(LogTemp, Warning, TEXT("melee firing"));
+		//UE_LOG(LogTemp, Warning, TEXT("melee firing"));
 
 		UGameplayStatics::ApplyDamage(Target, Damage, Owner->GetInstigatorController(), Owner, UDamageType::StaticClass());
 	}

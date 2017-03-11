@@ -27,20 +27,22 @@ void UProgressBarView::BeginPlay()
 
 	if (Owner != NULL)
 	{
+		HealthComponent = Cast<UHealthComponent>(Owner->GetComponentByClass(UHealthComponent::StaticClass()));
+
 		UWidgetComponent* Widget = Cast<UWidgetComponent>(Owner->GetComponentByClass(UWidgetComponent::StaticClass()));
 
 		if (Widget)
 		{
-			UE_LOG(LogTemp, Warning, TEXT("found the widget %s"), *Widget->GetName());
+			//UE_LOG(LogTemp, Warning, TEXT("found the widget %s"), *Widget->GetName());
 			UUserWidget* parentpoop = Widget->GetUserWidgetObject();
 			if (parentpoop)
 			{
 				ProgressBar = Cast<UProgressBar>(parentpoop->GetWidgetFromName(FName(TEXT("ProgressBar_103"))));
 
-				UE_LOG(LogTemp, Warning, TEXT("found the archtype %s"), *parentpoop->GetName());
+				//UE_LOG(LogTemp, Warning, TEXT("found the archtype %s"), *parentpoop->GetName());
 				if (ProgressBar)
 				{
-					UE_LOG(LogTemp, Warning, TEXT("found the progress bar!"));
+					//UE_LOG(LogTemp, Warning, TEXT("found the progress bar!"));
 				}
 			}
 		}
@@ -50,12 +52,6 @@ void UProgressBarView::BeginPlay()
 void UProgressBarView::OnRegister()
 {
 	Super::OnRegister();
-	AActor* Owner = this->GetOwner();
-
-	if (Owner != NULL)
-	{
-		HealthComponent = Cast<UHealthComponent>(Owner->GetComponentByClass(UHealthComponent::StaticClass()));
-	}
 }
 
 // Called every frame

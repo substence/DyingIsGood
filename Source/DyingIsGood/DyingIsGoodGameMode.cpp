@@ -15,20 +15,6 @@ ADyingIsGoodGameMode::ADyingIsGoodGameMode()
 {
 	// use our custom PlayerController class
 	PlayerControllerClass = PlayerControllerBlueprint;
-	if (!PlayerControllerBlueprint)
-	{
-		//UE_LOG(LogTemp, Warning, TEXT("failed to create PlayerControllerClass %s"), *PlayerControllerBlueprint->GetName());
-		//UE_LOG(LogTemp, Warning, TEXT("failed to create PlayerControllerClass") );
-
-		PlayerControllerClass = ADyingIsGoodPlayerController::StaticClass();
-	}
-
-	// set default pawn class to our Blueprinted character
-	static ConstructorHelpers::FClassFinder<APawn> PlayerPawnBPClass(TEXT("/Game/TopDownCPP/Blueprints/TopDownCharacter"));
-	if (PlayerPawnBPClass.Class != NULL)
-	{
-		//DefaultPawnClass = PlayerPawnBPClass.Class;
-	}
 
 	static ConstructorHelpers::FClassFinder<APawn> MinionBPClass(TEXT("Blueprint'/Game/TopDownCPP/Blueprints/Minion_Blueprint'"));
 	if (MinionBPClass.Class != NULL)
@@ -43,13 +29,10 @@ ADyingIsGoodGameMode::ADyingIsGoodGameMode()
 	}
 
 	PrimaryActorTick.bCanEverTick = true;
-
-	//GameStateClass = ADyingIsGoodGameState::StaticClass();
 }
 
 void ADyingIsGoodGameMode::InitGameState()
 {
-	//UE_LOG(LogTemp, Warning, TEXT("InitGameState %s"), *GameState->GetName());
 	//UE_LOG(LogTemp, Warning, TEXT("InitGameState %s"), *GameStateClass->GetName());
 	Super::InitGameState();
 	UWorld* World = GetWorld();
@@ -171,4 +154,33 @@ void ADyingIsGoodGameMode::BeginPlay()
 	{
 		Character = Cast<ACharacter>(FoundActors[0]);
 	}
+}
+
+FString ADyingIsGoodGameMode::InitNewPlayer
+(
+	APlayerController * NewPlayerController,
+	const FUniqueNetIdRepl & UniqueId,
+	const FString & Options,
+	const FString & Portal
+)
+{
+	FString Dunno = Super::InitNewPlayer(NewPlayerController, UniqueId, Options, Portal);
+	UPlayerIdentity* PlayerIdentity = NewObject<UPlayerIdentity>();
+	PlayerIdentity->TeamIndex = Players.Num();
+	PlayerIdentity->Controller = NewPlayerController;
+	Players.Add(PlayerIdentity);
+
+	UE_LOG(LogTemp, Warning, TEXT("played joined"));
+
+	TArray<AFieldActor*> Actors;
+	for (TActorIterator<AFieldActor> ActorItr(GetWorld()); ActorItr; ++ActorItr)
+	{
+		if (ActorItr->TeamIndex == PlayerIdentity->TeamIndex)
+		{
+			UE_LOG(LogTemp, Warning, TEXT("assigning player to actor"));
+
+			ActorItr->Identity = PlayerIdentity;
+		}
+	}
+	return Dunno;
 }

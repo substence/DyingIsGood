@@ -69,6 +69,6 @@ TArray<AFieldActor*> AWeaponOwnerController::GetTargetableActorsSortedByDistance
 
 bool AWeaponOwnerController::IsActorTargetable(AFieldActor* PossessdPawn, AFieldActor* Actor)
 {
-	return Actor->IsA(AFieldActor::StaticClass()) && Actor != PossessdPawn && PossessdPawn->TeamIndex != Actor->TeamIndex;
+	return Actor->IsA(AFieldActor::StaticClass()) && Actor != PossessdPawn && PossessdPawn->GetTeamIndex() != Actor->GetTeamIndex();
 }
 

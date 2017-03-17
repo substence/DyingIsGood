@@ -5,21 +5,14 @@
 #include "Engine.h"
 #include "ProgressBar.h"
 #include "Blueprint/UserWidget.h"
+#include "../Public/Actors/FieldActor.h"
 #include "Runtime/UMG/Public/Components/WidgetComponent.h"
 
-
-// Sets default values for this component's properties
 UProgressBarView::UProgressBarView()
 {
-	// Set this component to be initialized when the game starts, and to be ticked every frame.  You can turn these features
-	// off to improve performance if you don't need them.
 	PrimaryComponentTick.bCanEverTick = true;
-
-	// ...
 }
 
-
-// Called when the game starts
 void UProgressBarView::BeginPlay()
 {
 	Super::BeginPlay();
@@ -29,7 +22,15 @@ void UProgressBarView::BeginPlay()
 	{
 		HealthComponent = Cast<UHealthComponent>(Owner->GetComponentByClass(UHealthComponent::StaticClass()));
 
-		UWidgetComponent* Widget = Cast<UWidgetComponent>(Owner->GetComponentByClass(UWidgetComponent::StaticClass()));
+		ProgressBarWidget = CreateWidget<UUserWidget>(GetWorld(), ProgressBarClass);
+		if (ProgressBarWidget)
+		{
+			//UE_LOG(LogTemp, Warning, TEXT("created progressbar widget"));
+			ProgressBarWidget->AddToViewport();
+			ProgressBar = Cast<UProgressBar>(ProgressBarWidget->GetWidgetFromName(FName(TEXT("ProgressBar_103"))));
+		}
+
+		/*UWidgetComponent* Widget = Cast<UWidgetComponent>(Owner->GetComponentByClass(UWidgetComponent::StaticClass()));
 
 		if (Widget)
 		{
@@ -39,19 +40,28 @@ void UProgressBarView::BeginPlay()
 			{
 				ProgressBar = Cast<UProgressBar>(parentpoop->GetWidgetFromName(FName(TEXT("ProgressBar_103"))));
 
-				//UE_LOG(LogTemp, Warning, TEXT("found the archtype %s"), *parentpoop->GetName());
+				/*UE_LOG(LogTemp, Warning, TEXT("found the archtype %s"), *parentpoop->GetName());
 				if (ProgressBar)
 				{
-					//UE_LOG(LogTemp, Warning, TEXT("found the progress bar!"));
+					UE_LOG(LogTemp, Warning, TEXT("found the progress bar!"));
 				}
 			}
-		}
+		}*/
 	}
 }
 
 void UProgressBarView::OnRegister()
 {
 	Super::OnRegister();
+}
+
+void UProgressBarView::OnComponentDestroyed(bool bDestroyingHierarchy)
+{
+	if (ProgressBarWidget)
+	{
+		ProgressBarWidget->RemoveFromViewport();
+	}
+	Super::OnComponentDestroyed(bDestroyingHierarchy);
 }
 
 // Called every frame
@@ -61,7 +71,39 @@ void UProgressBarView::TickComponent( float DeltaTime, ELevelTick TickType, FAct
 
 	if (ProgressBar && HealthComponent)
 	{
+		//UE_LOG(LogTemp, Warning, TEXT("1"));
+
 		ProgressBar->SetPercent(HealthComponent->GetHealthPercentage());
+		AFieldActor* Owner = Cast<AFieldActor>(GetOwner());
+		if (Owner)
+		{
+			//UE_LOG(LogTemp, Warning, TEXT("2"));
+
+
+			//APlayerController* Controller = Cast<APlayerController>(Owner->GetInstigatorController());
+			APlayerController* Controller = UGameplayStatics::GetPlayerController(GetWorld(), 0);
+
+			if (Controller)
+			{
+				//UE_LOG(LogTemp, Warning, TEXT("3"));
+
+				FVector2D ScreenPosition;
+				bool bIsActorOnScreen = Controller->ProjectWorldLocationToScreen(Owner->GetActorLocation(), ScreenPosition);
+				if (ProgressBarWidget)
+				{
+					//UE_LOG(LogTemp, Warning, TEXT("4"));
+
+					ProgressBarWidget->Visibility = bIsActorOnScreen ? ESlateVisibility::Visible : ESlateVisibility::Hidden;
+					if (bIsActorOnScreen)
+					{
+						//UE_LOG(LogTemp, Warning, TEXT("5"));
+
+						ProgressBarWidget->SetPositionInViewport(ScreenPosition);
+					}
+				}
+			}
+		}
+		//this->GetOwner()->GetInstigatorController()->
 	}
 }
 

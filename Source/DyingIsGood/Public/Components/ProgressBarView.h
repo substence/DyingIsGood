@@ -25,10 +25,14 @@ public:
 	virtual void OnRegister() override;
 
 	UPROPERTY(EditDefaultsOnly)
-	TSubclassOf<class UWidget> ProgressBarClass;
+	TSubclassOf<class UUserWidget> ProgressBarClass;
 
 	UPROPERTY(EditDefaultsOnly)
 	UProgressBar* ProgressBar;
+
+	virtual void OnComponentDestroyed(bool bDestroyingHierarchy) override;
 private:
+	UUserWidget* ProgressBarWidget;
+
 	UHealthComponent* HealthComponent;
 };

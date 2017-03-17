@@ -3,6 +3,7 @@
 #pragma once
 
 #include "GameFramework/Character.h"
+#include "PlayerIdentity.h"
 #include "FieldActor.generated.h"
 
 UCLASS()
@@ -28,4 +29,15 @@ public:
 
 	UPROPERTY(EditInstanceOnly)
 	int TeamIndex;
+
+	UPlayerIdentity* Identity;
+
+	int GetTeamIndex()
+	{
+		if (Identity)
+		{
+			return Identity->TeamIndex;
+		}
+		return -1;
+	}
 };

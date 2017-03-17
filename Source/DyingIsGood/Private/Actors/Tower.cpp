@@ -26,10 +26,3 @@ void ATower::Tick( float DeltaTime )
 
 }
 
-// Called to bind functionality to input
-void ATower::SetupPlayerInputComponent(class UInputComponent* InputComponent)
-{
-	Super::SetupPlayerInputComponent(InputComponent);
-
-}
-

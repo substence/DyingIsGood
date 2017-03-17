@@ -4,6 +4,7 @@
 #include "Throne.h"
 #include "Blueprint/UserWidget.h"
 #include "ProgressBar.h"
+#include "Public/PlayerIdentity.h"
 #include "DyingIsGoodGameMode.generated.h"
 
 UCLASS()
@@ -26,6 +27,13 @@ public:
 
 	virtual void BeginPlay() override;
 
+	virtual FString InitNewPlayer
+	(
+		APlayerController * NewPlayerController,
+		const FUniqueNetIdRepl & UniqueId,
+		const FString & Options,
+		const FString & Portal
+	)override;
 private:
 	float TimeOfLastDeploy;
 	float DeployDelay = 5.0f;
@@ -37,6 +45,7 @@ private:
 	UProgressBar* CharacterProgressBar;
 	UProgressBar* ThroneProgressBar;
 	ACharacter* Character;
+	TArray<UPlayerIdentity*> Players;
 };
 
 

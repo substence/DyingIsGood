@@ -27,7 +27,6 @@ public:
 	UPROPERTY(EditDefaultsOnly)
 	TSubclassOf<class UUserWidget> ProgressBarClass;
 
-	UPROPERTY(EditDefaultsOnly)
 	UProgressBar* ProgressBar;
 
 	virtual void OnComponentDestroyed(bool bDestroyingHierarchy) override;

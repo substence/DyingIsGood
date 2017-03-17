@@ -15,5 +15,9 @@ class DYINGISGOOD_API UPlayerIdentity : public UObject
 public:
 	int TeamIndex;
 	UPlayer* Player;
-	APlayerController* Controller;	
+	APlayerController* Controller;
+	bool IsSupportedForNetworking() const override
+	{
+		return true;
+	}
 };

@@ -4,11 +4,14 @@
 #include "Tower.h"
 #include "../../Public/WeaponOwnerController.h"
 #include "../../Public/Components/Weapon.h"
+#include "Minion.h"
 
 void AWeaponOwnerController::Tick(float DeltaSeconds)
 {	
+	//UE_LOG(LogTemp, Warning, TEXT("issuing move command on %s"), *GetPawn()->GetName());
+
 	AFieldActor* Tower = Cast<AFieldActor>(GetPawn());
-	//UE_LOG(LogTemp, Warning, TEXT("issuing move command on %s"), *Tower->GetName());
+
 	if (Tower)
 	{
 		const float Range = Tower->Range;
@@ -69,6 +72,13 @@ TArray<AFieldActor*> AWeaponOwnerController::GetTargetableActorsSortedByDistance
 
 bool AWeaponOwnerController::IsActorTargetable(AFieldActor* PossessdPawn, AFieldActor* Actor)
 {
+
+	if (PossessdPawn->IsA(AMinion::StaticClass()))
+	{
+		UE_LOG(LogTemp, Warning, TEXT("CHECKING IF ACTOR IS TARGETABLE, THIS IS %d"), PossessdPawn->GetTeamIndex());
+		UE_LOG(LogTemp, Warning, TEXT("CHECKING IF ACTOR IS TARGETABLE, TARGET IS %d"), Actor->GetTeamIndex());
+	}
+
 	return Actor->IsA(AFieldActor::StaticClass()) && Actor != PossessdPawn && PossessdPawn->GetTeamIndex() != Actor->GetTeamIndex();
 }
 

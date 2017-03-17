@@ -2,6 +2,7 @@
 #pragma once
 #include "GameFramework/PlayerController.h"
 #include "Public/Actors/FieldActor.h"
+#include "Public/PlayerIdentity.h"
 #include "DyingIsGoodPlayerController.generated.h"
 
 UCLASS()
@@ -16,6 +17,12 @@ public:
 
 	UPROPERTY(EditDefaultsOnly)
 	TSubclassOf<class AFieldActor> FieldActorToSpawn;
+
+	UPROPERTY(Replicated)
+	UPlayerIdentity* Identity;
+
+	UPROPERTY(Replicated)
+	int test = -1;
 
 protected:
 	/** True if the controlled character should navigate to the mouse cursor. */

@@ -1,6 +1,8 @@
 // Copyright 1998-2016 Epic Games, Inc. All Rights Reserved.
 
 #include "DyingIsGood.h"
+#include "Net/UnrealNetwork.h"
+#include "Public/PlayerIdentity.h"
 #include "DyingIsGoodPlayerController.h"
 #include "AI/Navigation/NavigationSystem.h"
 #include "Runtime/Engine/Classes/Components/DecalComponent.h"
@@ -11,12 +13,19 @@
 ADyingIsGoodPlayerController::ADyingIsGoodPlayerController()
 {
 	bShowMouseCursor = true;
+	bReplicates = true;
 	DefaultMouseCursor = EMouseCursor::Crosshairs;
 }
 
 void ADyingIsGoodPlayerController::BeginPlay()
 {
 	Super::BeginPlay();
+	UE_LOG(LogTemp, Warning, TEXT("player beginplay %d"), test);
+
+	if (Identity)
+	{
+		UE_LOG(LogTemp, Warning, TEXT("player has identity"));
+	}
 }
 
 void ADyingIsGoodPlayerController::PlayerTick(float DeltaTime)
@@ -116,6 +125,26 @@ void ADyingIsGoodPlayerController::SpawnFieldActorAtMouse()
 		{
 			FVector_NetQuantize ImpactPoint = result.ImpactPoint;
 			AFieldActor* Projectile = GetWorld()->SpawnActor<AFieldActor>(FieldActorToSpawn, ImpactPoint, FRotator::ZeroRotator);
+			if (Projectile)
+			{
+				Projectile->Identity = Identity;
+				UE_LOG(LogTemp, Warning, TEXT("spawned minion"));
+				if (Identity)
+				{
+					UE_LOG(LogTemp, Warning, TEXT("player has identiy"));
+
+				}
+				//UE_LOG(LogTemp, Warning, TEXT("doing damage %d"), Identity->TeamIndex);
+
+			}
 		}
 	}
+}
+
+void ADyingIsGoodPlayerController::GetLifetimeReplicatedProps(TArray< FLifetimeProperty > & OutLifetimeProps) const
+{
+	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
+
+	DOREPLIFETIME(ADyingIsGoodPlayerController, test);
+	DOREPLIFETIME(ADyingIsGoodPlayerController, Identity);
 }

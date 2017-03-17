@@ -25,28 +25,9 @@ void UProgressBarView::BeginPlay()
 		ProgressBarWidget = CreateWidget<UUserWidget>(GetWorld(), ProgressBarClass);
 		if (ProgressBarWidget)
 		{
-			//UE_LOG(LogTemp, Warning, TEXT("created progressbar widget"));
 			ProgressBarWidget->AddToViewport();
 			ProgressBar = Cast<UProgressBar>(ProgressBarWidget->GetWidgetFromName(FName(TEXT("ProgressBar_103"))));
 		}
-
-		/*UWidgetComponent* Widget = Cast<UWidgetComponent>(Owner->GetComponentByClass(UWidgetComponent::StaticClass()));
-
-		if (Widget)
-		{
-			//UE_LOG(LogTemp, Warning, TEXT("found the widget %s"), *Widget->GetName());
-			UUserWidget* parentpoop = Widget->GetUserWidgetObject();
-			if (parentpoop)
-			{
-				ProgressBar = Cast<UProgressBar>(parentpoop->GetWidgetFromName(FName(TEXT("ProgressBar_103"))));
-
-				/*UE_LOG(LogTemp, Warning, TEXT("found the archtype %s"), *parentpoop->GetName());
-				if (ProgressBar)
-				{
-					UE_LOG(LogTemp, Warning, TEXT("found the progress bar!"));
-				}
-			}
-		}*/
 	}
 }
 

@@ -40,6 +40,8 @@ void AMinion::BeginPlay()
 void AMinion::Tick( float DeltaTime )
 {
 	Super::Tick( DeltaTime );
+	//UE_LOG(LogTemp, Warning, TEXT("ticking minion"),);
+
 	//DamageAllNearbyActors();
 }
 

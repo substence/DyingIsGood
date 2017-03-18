@@ -51,19 +51,19 @@ FString ADyingIsGoodGameMode::InitNewPlayer
 	ADyingIsGoodPlayerController* Controller = Cast<ADyingIsGoodPlayerController>(NewPlayerController);
 	if (Controller)
 	{
-		Controller->Identity = PlayerIdentity;
-		Controller->test = PlayerIdentity->TeamIndex;
-		UE_LOG(LogTemp, Warning, TEXT("identity is set %d"), Controller->test);
+		//Controller->Identity = PlayerIdentity;
+		Controller->TeamIndex = PlayerIdentity->TeamIndex;
+		/*UE_LOG(LogTemp, Warning, TEXT("identity is set %d"), Controller->TeamIndex);
 		if (Controller->Identity)
 		{
 			//UE_LOG(LogTemp, Warning, TEXT("identity is valid"));
 
-		}
+		}*/
 	}
 	
 	UE_LOG(LogTemp, Warning, TEXT("played joined %d"), PlayerIdentity->TeamIndex);
 
-	TArray<AFieldActor*> Actors;
+	/*TArray<AFieldActor*> Actors;
 	for (TActorIterator<AFieldActor> ActorItr(GetWorld()); ActorItr; ++ActorItr)
 	{
 		if (ActorItr->TeamIndex == PlayerIdentity->TeamIndex)
@@ -72,6 +72,6 @@ FString ADyingIsGoodGameMode::InitNewPlayer
 
 			ActorItr->Identity = PlayerIdentity;
 		}
-	}
+	}*/
 	return Dunno;
 }

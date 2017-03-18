@@ -28,16 +28,10 @@ public:
 	float Range;	
 
 	UPROPERTY(EditInstanceOnly)
-	int TeamIndex;
+	int TeamIndex = -1;
 
-	UPlayerIdentity* Identity;
-
-	int GetTeamIndex()
+	int GetTeamIndex() const
 	{
-		if (Identity)
-		{
-			return Identity->TeamIndex;
-		}
-		return -1;
+		return TeamIndex;
 	}
 };

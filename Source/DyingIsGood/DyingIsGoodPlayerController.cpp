@@ -20,12 +20,7 @@ ADyingIsGoodPlayerController::ADyingIsGoodPlayerController()
 void ADyingIsGoodPlayerController::BeginPlay()
 {
 	Super::BeginPlay();
-	UE_LOG(LogTemp, Warning, TEXT("player beginplay %d"), test);
-
-	if (Identity)
-	{
-		UE_LOG(LogTemp, Warning, TEXT("player has identity"));
-	}
+	UE_LOG(LogTemp, Warning, TEXT("player beginplay %d"), TeamIndex);
 }
 
 void ADyingIsGoodPlayerController::PlayerTick(float DeltaTime)
@@ -45,7 +40,7 @@ void ADyingIsGoodPlayerController::SetupInputComponent()
 	Super::SetupInputComponent();
 
 	//InputComponent->BindAction("SetDestination", IE_Pressed, this, &ADyingIsGoodPlayerController::OnSetDestinationPressed);
-	InputComponent->BindAction("SetDestination", IE_Released, this, &ADyingIsGoodPlayerController::SpawnFieldActorAtMouse);
+	InputComponent->BindAction("SetDestination", IE_Released, this, &ADyingIsGoodPlayerController::StartSpawnFieldActorAtMouse);
 
 	// support touch devices 
 	InputComponent->BindTouch(EInputEvent::IE_Pressed, this, &ADyingIsGoodPlayerController::MoveToTouchLocation);
@@ -115,36 +110,48 @@ void ADyingIsGoodPlayerController::SetNewMoveDestination(const FVector DestLocat
 	}
 }
 
-void ADyingIsGoodPlayerController::SpawnFieldActorAtMouse()
+void ADyingIsGoodPlayerController::StartSpawnFieldActorAtMouse()
 {
+	UE_LOG(LogTemp, Warning, TEXT("SpawnFieldActorAtMouse_Implementation"));
+
 	if (FieldActorToSpawn)
 	{
+		UE_LOG(LogTemp, Warning, TEXT("1"));
+
 		FHitResult result;
 		GetHitResultUnderCursor(ECollisionChannel::ECC_WorldStatic, false, result);
 		if (!result.ImpactPoint.IsZero())
 		{
-			FVector_NetQuantize ImpactPoint = result.ImpactPoint;
-			AFieldActor* Projectile = GetWorld()->SpawnActor<AFieldActor>(FieldActorToSpawn, ImpactPoint, FRotator::ZeroRotator);
-			if (Projectile)
-			{
-				Projectile->Identity = Identity;
-				UE_LOG(LogTemp, Warning, TEXT("spawned minion"));
-				if (Identity)
-				{
-					UE_LOG(LogTemp, Warning, TEXT("player has identiy"));
-
-				}
-				//UE_LOG(LogTemp, Warning, TEXT("doing damage %d"), Identity->TeamIndex);
-
-			}
+			UE_LOG(LogTemp, Warning, TEXT("2"));
+			//ImpactPoint = result.ImpactPoint;
+			SpawnFieldActorAtMouse(result.ImpactPoint);
 		}
 	}
+}
+
+void ADyingIsGoodPlayerController::SpawnFieldActorAtMouse_Implementation(FVector_NetQuantize ImpactPoint)
+{
+	UE_LOG(LogTemp, Warning, TEXT("3"));
+
+	FActorSpawnParameters SpawnParameters;
+	AFieldActor* Projectile = GetWorld()->SpawnActor<AFieldActor>(FieldActorToSpawn, ImpactPoint, FRotator::ZeroRotator);
+	if (Projectile)
+	{
+		UE_LOG(LogTemp, Warning, TEXT("4"));
+
+		Projectile->TeamIndex = TeamIndex;
+		Projectile->SetOwner(this);
+	}
+}
+
+bool ADyingIsGoodPlayerController::SpawnFieldActorAtMouse_Validate(FVector_NetQuantize ImpactPoint)
+{
+	return true;
 }
 
 void ADyingIsGoodPlayerController::GetLifetimeReplicatedProps(TArray< FLifetimeProperty > & OutLifetimeProps) const
 {
 	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
 
-	DOREPLIFETIME(ADyingIsGoodPlayerController, test);
-	DOREPLIFETIME(ADyingIsGoodPlayerController, Identity);
+	DOREPLIFETIME(ADyingIsGoodPlayerController, TeamIndex);
 }

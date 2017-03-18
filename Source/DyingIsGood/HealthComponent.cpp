@@ -1,6 +1,7 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 #include "DyingIsGood.h"
+#include "Net/UnrealNetwork.h"
 #include "HealthComponent.h"
 
 UHealthComponent::UHealthComponent()
@@ -63,6 +64,15 @@ void UHealthComponent::SetMaxHealth(float Value)
 float UHealthComponent::GetHealthPercentage()
 {
 	return Health / MaxHealth;
+}
+
+void UHealthComponent::GetLifetimeReplicatedProps(TArray< FLifetimeProperty > & OutLifetimeProps) const
+{
+	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
+
+	// Replicate to everyone
+	DOREPLIFETIME(UHealthComponent, Health);
+	DOREPLIFETIME(UHealthComponent, MaxHealth);
 }
 
 

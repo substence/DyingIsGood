@@ -19,10 +19,7 @@ public:
 	TSubclassOf<class AFieldActor> FieldActorToSpawn;
 
 	UPROPERTY(Replicated)
-	UPlayerIdentity* Identity;
-
-	UPROPERTY(Replicated)
-	int test = -1;
+	int TeamIndex = -1;
 
 protected:
 	/** True if the controlled character should navigate to the mouse cursor. */
@@ -45,7 +42,16 @@ protected:
 	/** Navigate player to the given world location. */
 	void SetNewMoveDestination(const FVector DestLocation);
 
-	void SpawnFieldActorAtMouse();
+	void StartSpawnFieldActorAtMouse();
+
+	UFUNCTION(Reliable, Server, WithValidation)
+	void SpawnFieldActorAtMouse(FVector_NetQuantize ImpactPoint);
+
+	void SpawnFieldActorAtMouse_Implementation(FVector_NetQuantize ImpactPoint);
+
+	bool SpawnFieldActorAtMouse_Validate(FVector_NetQuantize ImpactPoint);
+
+	//FVector_NetQuantize ImpactPoint;
 };
 
 

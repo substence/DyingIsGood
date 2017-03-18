@@ -75,10 +75,22 @@ bool AWeaponOwnerController::IsActorTargetable(AFieldActor* PossessdPawn, AField
 
 	if (PossessdPawn->IsA(AMinion::StaticClass()))
 	{
-		UE_LOG(LogTemp, Warning, TEXT("CHECKING IF ACTOR IS TARGETABLE, THIS IS %d"), PossessdPawn->GetTeamIndex());
-		UE_LOG(LogTemp, Warning, TEXT("CHECKING IF ACTOR IS TARGETABLE, TARGET IS %d"), Actor->GetTeamIndex());
+		//UE_LOG(LogTemp, Warning, TEXT("CHECKING IF ACTOR IS TARGETABLE, THIS IS %d"), PossessdPawn->GetTeamIndex());
+		//UE_LOG(LogTemp, Warning, TEXT("CHECKING IF ACTOR IS TARGETABLE, TARGET IS %d"), Actor->GetTeamIndex());
 	}
 
 	return Actor->IsA(AFieldActor::StaticClass()) && Actor != PossessdPawn && PossessdPawn->GetTeamIndex() != Actor->GetTeamIndex();
 }
+
+void AWeaponOwnerController::BeginPlay()
+{
+	Super::BeginPlay();
+	UE_LOG(LogTemp, Warning, TEXT("weaponownercontroller beginplay"));
+
+	if (GetPawn())
+	{
+		UE_LOG(LogTemp, Warning, TEXT("weaponownercontroller beginplay %s"), *GetPawn()->GetName());
+	}
+}
+
 

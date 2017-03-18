@@ -17,4 +17,5 @@ public:
 	virtual void Tick(float DeltaSeconds) override;	
 	TArray<AFieldActor*> GetTargetableActorsSortedByDistance(AFieldActor* PossessdPawn);
 	bool IsActorTargetable(AFieldActor* PossessdPawn, AFieldActor* Actor);
+	virtual void BeginPlay() override;
 };

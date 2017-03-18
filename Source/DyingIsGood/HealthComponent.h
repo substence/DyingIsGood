@@ -29,8 +29,12 @@ public:
 	float Max;
 
 private:
+	UPROPERTY(Replicated)
 	float Health = 100.0f;
+
+	UPROPERTY(Replicated)
 	float MaxHealth = 100.0f;
+
 	UFUNCTION()
 	void OwnerTakesDamage(AActor* DamagedActor, float Damage, const class UDamageType* DamageType, class AController* InstigatedBy, AActor* DamageCauser);
 };

@@ -16,7 +16,19 @@ AFieldActor::AFieldActor()
 void AFieldActor::BeginPlay()
 {
 	Super::BeginPlay();
-	
+	OnTakeAnyDamage.AddDynamic(this, &AFieldActor::OwnerTakesDamage);
+}
+
+void AFieldActor::OwnerTakesDamage(AActor* DamagedActor, float Damage, UDamageType const* const DamageTypeCDO, class AController* InstigatedBy, AActor* DamageCauser)
+{
+	if (Role >= ROLE_Authority)
+	{
+		UE_LOG(LogTemp, Warning, TEXT("took damage on the server"));
+	}
+	else
+	{
+		UE_LOG(LogTemp, Warning, TEXT("took damage on the client"));
+	}
 }
 
 // Called every frame

@@ -34,4 +34,7 @@ public:
 	{
 		return TeamIndex;
 	}
+
+	UFUNCTION()
+	void OwnerTakesDamage(AActor* DamagedActor, float Damage, const class UDamageType* DamageType, class AController* InstigatedBy, AActor* DamageCauser);
 };

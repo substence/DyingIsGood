@@ -63,15 +63,17 @@ FString ADyingIsGoodGameMode::InitNewPlayer
 	
 	UE_LOG(LogTemp, Warning, TEXT("played joined %d"), PlayerIdentity->TeamIndex);
 
-	/*TArray<AFieldActor*> Actors;
+	TArray<AFieldActor*> Actors;
 	for (TActorIterator<AFieldActor> ActorItr(GetWorld()); ActorItr; ++ActorItr)
 	{
 		if (ActorItr->TeamIndex == PlayerIdentity->TeamIndex)
 		{
 			//UE_LOG(LogTemp, Warning, TEXT("assigning player to actor %d"), PlayerIdentity->TeamIndex);
 
-			ActorItr->Identity = PlayerIdentity;
+			//ActorItr->TeamIndex = 
+			ActorItr->SetOwner(NewPlayerController);
+			//ActorItr->Controller = NewPlayerController;
 		}
-	}*/
+	}
 	return Dunno;
 }

@@ -32,8 +32,6 @@ void AMinion::BeginPlay()
 	Movement->RotationRate = FRotator(0.f, 640.f, 0.f);
 	Movement->bConstrainToPlane = true;
 	Movement->bSnapToPlaneAtStart = true;
-
-	//SpawnDefaultController();
 }
 
 // Called every frame

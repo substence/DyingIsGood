@@ -3,7 +3,7 @@
 #pragma once
 
 #include "Components/ActorComponent.h"
-#include "../../Public/TargetingParameters.h"
+#include "../TargetingParameters.h"
 #include "Weapon.generated.h"
 
 UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
@@ -22,19 +22,28 @@ public:
 	virtual void TickComponent( float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction ) override;
 
 	bool IsLoaded() const { return bIsLoaded; };
-	TargetingParameters GetTargetingParameters() const { return TargetParameters; };
+
+	//UTargetingParameters* GetTargetingParameters() const { return TargetParameters; };
 
 	float DurationToLoaded();
 
-	void Fire(TargetingParameters Parameters);
+	void Fire(UTargetingParameters* Parameters);
 
 	void StartReload();
 
-	UPROPERTY(EditDefaultsOnly, Category = "Weapon")
-	float LoadDuration;
+	UPROPERTY(Replicated)
+	AActor* Target;
+
+	/*UPROPERTY(Replicated)
+	UTargetingParameters* TargetParameters;*/
+
+	UPROPERTY(EditAnywhere, Category = "Weapon")
+	float LoadDuration = 15.0f;
+
 protected:
 	virtual void DoFire();
-	TargetingParameters TargetParameters;
+
+
 private:
 	float TimeFired = 0.0f;
 	bool bIsLoaded = true;

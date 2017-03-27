@@ -15,6 +15,8 @@ UProgressBarView::UProgressBarView()
 
 void UProgressBarView::BeginPlay()
 {
+	//UE_LOG(LogTemp, Warning, TEXT("creating UProgressBarView"));
+
 	Super::BeginPlay();
 	AActor* Owner = this->GetOwner();
 

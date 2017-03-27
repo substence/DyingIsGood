@@ -31,5 +31,6 @@ public:
 	UPROPERTY(EditDefaultsOnly)
 	float Damage;
 
-	TargetingParameters TargetParameters;
+	UPROPERTY(Replicated)
+	AActor* Target;
 };

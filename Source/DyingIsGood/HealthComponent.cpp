@@ -32,6 +32,7 @@ void UHealthComponent::OnRegister()
 void UHealthComponent::BeginPlay()
 {
 	Super::BeginPlay();
+	SetIsReplicated(true);
 }
 
 void UHealthComponent::OwnerTakesDamage(AActor* DamagedActor, float Damage, UDamageType const* const DamageTypeCDO, class AController* InstigatedBy, AActor* DamageCauser)

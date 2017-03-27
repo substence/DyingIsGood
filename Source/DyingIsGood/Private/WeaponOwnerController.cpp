@@ -4,6 +4,7 @@
 #include "Tower.h"
 #include "../../Public/WeaponOwnerController.h"
 #include "../../Public/Components/Weapon.h"
+#include "../../Public/Components/LauncherWeapon.h"
 #include "Minion.h"
 
 void AWeaponOwnerController::Tick(float DeltaSeconds)
@@ -39,9 +40,9 @@ void AWeaponOwnerController::Tick(float DeltaSeconds)
 				{
 					//UE_LOG(LogTemp, Warning, TEXT("found potential target in range with weapon"));
 
-					TargetingParameters Parameters;
-					Parameters.TargetPoint = ActorLocation;
-					Parameters.TargetActor = ActorItr;
+					UTargetingParameters* Parameters = NewObject<UTargetingParameters>();
+					Parameters->TargetPoint = ActorLocation;
+					Parameters->TargetActor = ActorItr;
 					UWeapon* Weapon = Cast<UWeapon>(Weapons[j]);
 					Weapon->Fire(Parameters);
 				}
@@ -75,8 +76,8 @@ bool AWeaponOwnerController::IsActorTargetable(AFieldActor* PossessdPawn, AField
 
 	if (PossessdPawn->IsA(AMinion::StaticClass()))
 	{
-		//UE_LOG(LogTemp, Warning, TEXT("CHECKING IF ACTOR IS TARGETABLE, THIS IS %d"), PossessdPawn->GetTeamIndex());
-		//UE_LOG(LogTemp, Warning, TEXT("CHECKING IF ACTOR IS TARGETABLE, TARGET IS %d"), Actor->GetTeamIndex());
+		UE_LOG(LogTemp, Warning, TEXT("CHECKING IF ACTOR IS TARGETABLE, THIS IS %d"), PossessdPawn->GetTeamIndex());
+		UE_LOG(LogTemp, Warning, TEXT("CHECKING IF ACTOR IS TARGETABLE, TARGET IS %d"), Actor->GetTeamIndex());
 	}
 
 	return Actor->IsA(AFieldActor::StaticClass()) && Actor != PossessdPawn && PossessdPawn->GetTeamIndex() != Actor->GetTeamIndex();

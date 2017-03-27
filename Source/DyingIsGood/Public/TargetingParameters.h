@@ -2,14 +2,24 @@
 
 #pragma once
 
+#include "UObject/NoExportTypes.h"
+#include "TargetingParameters.generated.h"
+
 /**
  * 
  */
-class DYINGISGOOD_API TargetingParameters
+UCLASS()
+class DYINGISGOOD_API UTargetingParameters : public UObject
 {
+	GENERATED_BODY()
 public:
-	TargetingParameters();
-	~TargetingParameters();
+	UTargetingParameters();
+	UPROPERTY(Replicated)
 	FVector TargetPoint;
+	UPROPERTY(Replicated)
 	AActor* TargetActor;
+	virtual bool IsSupportedForNetworking() const override
+	{
+		return true;
+	}
 };

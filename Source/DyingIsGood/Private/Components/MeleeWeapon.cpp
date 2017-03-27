@@ -5,7 +5,6 @@
 
 void UMeleeWeapon::DoFire()
 {
-	AActor* Target = TargetParameters.TargetActor;
 	AActor* Owner = GetOwner();
 	//UE_LOG(LogTemp, Warning, TEXT("melee attemping fire"));
 
